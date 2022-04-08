@@ -8,6 +8,7 @@ export interface VueTouchOptions {
 interface VueTouchOptionsClasses {
     tap?: string,
     longtap?: string,
+    dubletap?:string,
     swipe?: string,
     hold?: string,
     drug?: string,
@@ -16,6 +17,7 @@ interface VueTouchOptionsClasses {
 }
 interface VueTouchOptionsTolerance {
     tap?: number,
+    dubletap?: number,
     longtap?: number,
     swipe?: number,
     hold?: number,
@@ -25,7 +27,12 @@ interface VueTouchOptionsTolerance {
 interface TouchElement extends HTMLElement {
     _vueTouch: {
         events: string[] | ((...args: any[]) => void)[],
-        opts: Required<VueTouchOptions>
+        opts: Required<VueTouchOptions>,
+        touchStarted: boolean,
+        touchMoved: boolean,
+        touchDragTime: number|undefined,
+        swipeOutBounded: boolean,
+        touchStartTime: number|undefined
     }
 }
 const defaultOptions = {
@@ -33,6 +40,7 @@ const defaultOptions = {
     classes: {},
     tolerance: {
         tap: 10,
+        dubletap: 100,
         longtap: 400,
         swipe: 30,
         hold: 400,
@@ -45,7 +53,6 @@ const defaultListnerOptions: AddEventListenerOptions = {
     passive: false,
     capture: false
 };
-
 const getCoords = (
     event: MouseEvent|TouchEvent
 ): {x: number, y: number} => event.type.indexOf('mouse') !== -1
@@ -66,7 +73,13 @@ export default {
         const createTouchElement = (el: HTMLElement|TouchElement, options?:VueTouchOptions): TouchElement => {
             return Object.assign(el, {
                 _vueTouch: {
-                    events: "_vueTouch" in el ? el._vueTouch.events : [],
+                    touchStarted: false,
+                    touchMoved: false,
+                    touchDragTime: undefined,
+                    swipeOutBounded: false,
+                    touchStartTime: undefined,
+                    events: [],
+                    ...("_vueTouch" in el ? el._vueTouch : {}),
                     opts: assignOptions(options, "_vueTouch" in el ? el._vueTouch.opts : opts)
                 }
             }) as TouchElement;
