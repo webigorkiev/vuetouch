@@ -7,19 +7,20 @@ export interface VueTouchOptions {
 }
 interface VueTouchOptionsClasses {
     tap?: string,
-    longTap?: string,
+    longtap?: string,
     swipe?: string,
     hold?: string,
     drug?: string,
-    rollOver?: string
+    hover?: string,
+    rollover?: string
 }
 interface VueTouchOptionsTolerance {
     tap?: number,
-    longTap?: number,
+    longtap?: number,
     swipe?: number,
     hold?: number,
     drug?: number,
-    rollOver?: number
+    rollover?: number
 }
 interface TouchElement extends HTMLElement {
     _vueTouch: {
@@ -32,11 +33,11 @@ const defaultOptions = {
     classes: {},
     tolerance: {
         tap: 10,
-        longTap: 400,
+        longtap: 400,
         swipe: 30,
         hold: 400,
         drug: 100,
-        rollOver: 100
+        rollover: 100
     }
 };
 const defaultListnerOptions: AddEventListenerOptions = {
@@ -66,9 +67,17 @@ export default {
             return Object.assign(el, {
                 _vueTouch: {
                     events: "_vueTouch" in el ? el._vueTouch.events : [],
-                    opts: assignOptions(options, opts)
+                    opts: assignOptions(options, "_vueTouch" in el ? el._vueTouch.opts : opts)
                 }
             }) as TouchElement;
+        };
+        const addClass = (el: TouchElement, name: keyof VueTouchOptionsClasses) => {
+            const className = el._vueTouch.opts.classes[name];
+            className && el.classList.add(className);
+        };
+        const removeClass = (el: TouchElement, name: keyof VueTouchOptionsClasses) => {
+            const className = el._vueTouch.opts.classes[name];
+            className && el.classList.remove(className);
         };
         const touchstart = (event: Event) => {
             const el = event.target as TouchElement;
@@ -89,11 +98,11 @@ export default {
         };
         const mouseenter = (event: Event) => {
             const el = event.target as TouchElement;
-            console.log("mouseenter");
+            addClass(el, "hover");
         };
         const mouseleave = (event: Event) => {
             const el = event.target as TouchElement;
-            console.log("mouseleave");
+            removeClass(el, "hover");
         };
 
         app.directive('touch', {

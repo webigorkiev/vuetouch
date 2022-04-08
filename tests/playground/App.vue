@@ -1,7 +1,7 @@
 <template>
     <div class="external">
         <div class="internal">
-            <div class="goal" v-touch="onTap" v-touch-classes="{tap: 'tap-class'}" v-touch-tolerance="{tap: 12}"></div>
+            <div class="goal" v-touch="onTap" v-touch-classes="{hover: 'touch-hover-class'}" v-touch-tolerance="{tap: 12}"></div>
             <a v-touch="onTap"></a>
             <p v-touch></p>
         </div>
