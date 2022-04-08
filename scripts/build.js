@@ -29,6 +29,7 @@ const external = [
     await fs.copy("./LICENSE", path.resolve(root, "./LICENSE"));
     await fs.copy("./package.json", path.resolve(root, "./package.json"));
     await fs.copy("./README.md", path.resolve(root, "./README.md"));
+    await fs.copy("./web-types.json", path.resolve(root, "./web-types.json"));
     const pkg = await fs.readJson(path.resolve(root, "./package.json"));
     pkg.private = false;
     await fs.writeJson(path.resolve(root, "./package.json"), pkg, {
@@ -66,8 +67,9 @@ const build = async(input, output, format = "esm") => {
         ],
     });
     await bundle.write({
-        format: "esm",
+        format,
         file: output,
+        exports: "named"
     });
     await bundle.close();
 };

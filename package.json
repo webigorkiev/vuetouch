@@ -3,8 +3,8 @@
   "private": true,
   "description": "Enable tap, swipe, drag, touch, hold, mouse down, mouse up events on DOM Element in vue 3",
   "version": "0.0.1",
-  "main": "index.js",
-  "module": "ndex.mjs",
+  "main": "./index.js",
+  "module": "./index.mjs",
   "scripts": {
     "build": "yarn docs:build && node scripts/build.js",
     "dev": "vite",
@@ -60,5 +60,6 @@
   "bugs": {
     "url": "https://github.com/webigorkiev/vuetouch/issues"
   },
-  "homepage": "hhttps://github.com/webigorkiev/vuetouch#readme"
+  "homepage": "hhttps://github.com/webigorkiev/vuetouch#readme",
+  "web-types": "./web-types.json"
 }

@@ -1,0 +1,73 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JetBrains/web-types/master/schema/web-types.json",
+  "name": "vuetouch",
+  "framework": "vue",
+  "version": "1.0.0",
+  "js-types-syntax": "typescript",
+  "description-markup": "markdown",
+  "default-icon": "./assets/vue-icon.svg",
+  "contributions": {
+    "html": {
+      "tags": [
+        {
+          "name": "div,a",
+          "attributes": [
+            {
+              "name": "v-touch",
+              "description": "When added multilang record transform to tag block",
+              "doc-url": "https://webigorkiev.github.io/vuetouch-docs/",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              }
+            }
+          ]
+        }
+      ],
+      "attributes": [
+        {
+          "name": "v-touch",
+          "description": "",
+          "doc-url": "https://webigorkiev.github.io/vuetouch-docs/",
+          "default": "",
+          "required": false,
+          "value": {
+            "kind": "expression"
+          },
+          "source": {
+            "module": "./src/index.ts",
+            "symbol": "Touch"
+          }
+        },
+        {
+          "name": "v-touch-classes",
+          "description": "",
+          "doc-url": "https://webigorkiev.github.io/vuetouch-docs/",
+          "default": "",
+          "required": false,
+          "value": {
+            "kind": "expression"
+          },
+          "source": {
+            "module": "./src/index.ts",
+            "symbol": "Touch"
+          }
+        },
+        {
+          "name": "v-touch-tolerance",
+          "description": "",
+          "doc-url": "https://webigorkiev.github.io/vuetouch-docs/",
+          "default": "",
+          "required": false,
+          "value": {
+            "kind": "expression"
+          },
+          "source": {
+            "module": "./src/index.ts",
+            "symbol": "Touch"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,7 +1,9 @@
 <template>
     <div class="external">
         <div class="internal">
-            <div class="goal"></div>
+            <div class="goal" v-touch="onTap" v-touch-classes="{tap: 'tap-class'}" v-touch-tolerance="{tap: 12}"></div>
+            <a v-touch="onTap"></a>
+            <p v-touch></p>
         </div>
     </div>
 </template>
@@ -10,7 +12,12 @@
     import {defineComponent} from "vue";
 
     export default defineComponent({
-        name: "App"
+        name: "App",
+        methods: {
+            onTap(event) {
+                console.log(event);
+            }
+        }
     });
 </script>
 
@@ -20,7 +27,7 @@
         align-items: center;
         margin: 0 auto;
         width: 1024px;
-        height: 256px;
+        height: 512px;
         background-color: aliceblue;
     }
     .internal {
@@ -28,13 +35,13 @@
         align-items: center;
         margin: 0 auto;
         width: 512px;
-        height: 128px;
+        height: 256px;
         background-color: bisque;
     }
     .goal {
         margin: 0 auto;
         width: 256px;
-        height: 64px;
+        height: 128px;
         background-color: darkred;
     }
 </style>
