@@ -6,7 +6,6 @@
                 v-touch="onTap"
                 v-touch:swipe.passive.once="onTap"
                 v-touch:swpipe.passive.once="onTap"
-                v-touch-classes="{hover: 'touch-hover-class'}"
                 v-touch-tolerance="{tap: 12}"
             ></div>
         </div>
@@ -44,9 +43,14 @@
         background-color: bisque;
     }
     .goal {
+        transition: transform .2s ease-in-out;
         margin: 0 auto;
         width: 256px;
         height: 128px;
         background-color: darkred;
+        cursor: pointer;
+    }
+    .v-touch-dbltap {
+        transform: scale(0.97);
     }
 </style>
