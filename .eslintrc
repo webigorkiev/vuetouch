@@ -16,7 +16,7 @@
     "rules": {
         "@typescript-eslint/no-inferrable-types": "off",
         "no-debugger": "off",
-        "no-console": "warn",
+        "no-console": "off",
         "no-multiple-empty-lines": ["error", {"max": 1, "maxBOF": 0}],
         "useTabs": "off",
         "no-prototype-builtins": "off",

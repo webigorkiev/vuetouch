@@ -1,9 +1,14 @@
 <template>
     <div class="external">
         <div class="internal">
-            <div class="goal" v-touch="onTap" v-touch-classes="{hover: 'touch-hover-class'}" v-touch-tolerance="{tap: 12}"></div>
-            <a v-touch="onTap"></a>
-            <p v-touch></p>
+            <div
+                class="goal"
+                v-touch="onTap"
+                v-touch:swipe.passive.once="onTap"
+                v-touch:swpipe.passive.once="onTap"
+                v-touch-classes="{hover: 'touch-hover-class'}"
+                v-touch-tolerance="{tap: 12}"
+            ></div>
         </div>
     </div>
 </template>
