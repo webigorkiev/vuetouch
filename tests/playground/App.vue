@@ -61,10 +61,10 @@
     .v-touch-hover {
         border: 5px dashed black;
     }
-    .v-touch-tap {
+    .v-touch-press {
         border-radius: 30% 0 30% 0;
     }
-    .v-touch-longtap {
+    .v-touch-hold {
         background-color: #4d0000;
     }
     .v-touch-dbltap {

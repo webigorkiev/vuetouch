@@ -2,7 +2,7 @@ import type {Plugin, Directive} from "vue";
 import {assignOptions, addClass, removeClass, clean, emit, createTouchElement} from "./helpers/utils";
 import type {VueTouch} from "@/types";
 
-const allowsEvents: VueTouch.events[] = ["hover","tap","dbltap","longtap","swipe","hold","drug","rollover"];
+const allowsEvents: VueTouch.events[] = ["hover","press","tap","dbltap","longtap","hold","rollover","swipe","drag","release"];
 
 const defaultListenerOptions: AddEventListenerOptions = {
     once: false,
@@ -21,11 +21,11 @@ export default {
             vt.touchMoved = false;
             vt.swipeOutBounded = false;
             vt.touchStartTime = event.timeStamp;
-            emit(event, "tap");
-            addClass(el, "tap", true);
+            emit(event, "press");
+            addClass(el, "press", true);
             vt.touchHoldTimer = vt.touchHoldTimer || setTimeout(() => {
-                emit(event, "longtap");
-                addClass(el, "longtap");
+                emit(event, "hold");
+                addClass(el, "hold");
             }, vt.opts.tolerance.longtap);
         };
         const touchmove = (event: Event) => {
@@ -41,7 +41,7 @@ export default {
             const vt = el._vueTouch;
             clearTimeout(vt.touchHoldTimer);
             delete vt.touchHoldTimer;
-            removeClass(el, "longtap");
+            removeClass(el, "hold");
             console.log("touchend");
         };
         const mouseenter = (event: Event) => {

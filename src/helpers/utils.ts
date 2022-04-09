@@ -3,24 +3,25 @@ import type {VueTouch} from "@/types";
 const defaultOptions = {
     click: true,
     classes: {
-        tap: "v-touch-tap",
+        hold: "v-touch-hold",
+        press: "v-touch-press",
         multi: "v-touch-multi",
         dbltap: "v-touch-dbltap",
         longtap: "v-touch-longtap",
-        swipe: "v-touch-swipe",
-        hold: "v-touch-hold",
-        drug: "v-touch-drug",
         hover: "v-touch-hover",
         rollover: "v-touch-rollover",
+        swipe: "v-touch-swipe",
+        drag: "v-touch-drag",
+        release: "v-touch-release",
     },
     tolerance: {
-        tap: 10, // drug > px
-        multi: 10, // drug > px
+        tap: 10, // drag > px
+        multi: 10, // drag > px
         dbltap: 100, // ms
         longtap: 400,
         swipe: 30,
         hold: 400,
-        drug: 100,
+        drag: 100,
         rollover: 100,
         timeout: 200 // ms class remove after event
     }

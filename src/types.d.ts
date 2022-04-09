@@ -6,17 +6,19 @@ export namespace VueTouch {
         classes?: VueTouchOptionsClasses; // classes for all state of component
         tolerance?: VueTouchOptionsTolerance; // in ms
     }
-    export type events = "tap"|"multi"|"dbltap"|"longtap"|"swipe"|"hold"|"drug"|"hover"|"rollover";
+    export type events = "hover"|"press"|"tap"|"multi"|"dbltap"|"longtap"|"hold"|"swipe"|"drag"|"rollover"|"release";
     export interface OptionsClasses {
+        hover?: string,
+        press?: string,
         tap?: string,
         dbltap?:string,
         multi?:string,
         longtap?: string,
-        swipe?: string,
         hold?: string,
-        drug?: string,
-        hover?: string,
-        rollover?: string
+        rollover?: string,
+        swipe?: string,
+        drag?: string,
+        release?: string,
     }
     export interface OptionsTolerance { // in ms
         tap?: number,
@@ -25,7 +27,7 @@ export namespace VueTouch {
         longtap?: number,
         swipe?: number,
         hold?: number,
-        drug?: number,
+        drag?: number,
         hover?: number,
         rollover?: number,
         timeout: 200
