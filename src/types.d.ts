@@ -27,7 +27,8 @@ export namespace VueTouch {
         hold?: number,
         drug?: number,
         hover?: number,
-        rollover?: number
+        rollover?: number,
+        timeout: 200
     }
     export interface Element extends HTMLElement {
         _vueTouch: {
@@ -41,9 +42,11 @@ export namespace VueTouch {
             touchDragTime?: number,
             swipeOutBounded: boolean,
             touchStartTime?: number,
-            currentXY?: number[],
-            lastXY?: number[],
-            elXY?: number[],
+            touchHoldTimer?: Timer,
+            multi: number,
+            currentXY: number[],
+            lastXY: number[],
+            shiftXY: number[],
         }
     }
 }

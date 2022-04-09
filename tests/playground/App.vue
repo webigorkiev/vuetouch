@@ -3,10 +3,9 @@
         <div class="internal">
             <div
                 class="goal"
-                v-touch="onTap"
-                v-touch:swipe.passive.once="onTap"
-                v-touch:swpipe.passive.once="onTap"
-                v-touch-tolerance="{tap: 12}"
+                v-touch:tap="onTap"
+                v-touch:dbltap="onDblTap"
+                v-touch:longtap="onLongTap"
             ></div>
         </div>
     </div>
@@ -19,7 +18,13 @@
         name: "App",
         methods: {
             onTap(event) {
-                console.log(event);
+                console.log("tap", event);
+            },
+            onDblTap(event) {
+                console.log("dbltap", event);
+            },
+            onLongTap(event) {
+                console.log("longtap", event);
             }
         }
     });
@@ -33,6 +38,7 @@
         width: 1024px;
         height: 512px;
         background-color: aliceblue;
+        box-sizing: border-box;
     }
     .internal {
         display: flex;
@@ -41,16 +47,28 @@
         width: 512px;
         height: 256px;
         background-color: bisque;
+        box-sizing: border-box;
     }
     .goal {
-        transition: transform .2s ease-in-out;
+        transition: all .2s ease-in-out;
         margin: 0 auto;
         width: 256px;
         height: 128px;
         background-color: darkred;
         cursor: pointer;
+        box-sizing: border-box;
+    }
+    .v-touch-hover {
+        border: 5px dashed black;
+    }
+    .v-touch-tap {
+        border-radius: 30% 0 30% 0;
+    }
+    .v-touch-longtap {
+        background-color: #4d0000;
     }
     .v-touch-dbltap {
         transform: scale(0.97);
+        border-radius: 0 30% 0 30%;
     }
 </style>

@@ -1,115 +1,32 @@
-import type {Plugin, Directive, DirectiveBinding} from "vue";
+import type {Plugin, Directive} from "vue";
+import {assignOptions, addClass, removeClass, clean, emit, createTouchElement} from "./helpers/utils";
 import type {VueTouch} from "@/types";
 
-const allowsEvents: VueTouch.events[] = ["tap","dbltap","longtap","swipe","hold","drug","hover","rollover"];
-const defaultOptions = {
-    click: true,
-    classes: {
-        tap: "v-touch-tap",
-        multi: "v-touch-multi",
-        dbltap: "v-touch-dbltap",
-        longtap: "v-touch-longtap",
-        swipe: "v-touch-swipe",
-        hold: "v-touch-hold",
-        drug: "v-touch-drug",
-        hover: "v-touch-hover",
-        rollover: "v-touch-rollover",
-    },
-    tolerance: {
-        tap: 10,
-        multi: 10,
-        dbltap: 100,
-        longtap: 400,
-        swipe: 30,
-        hold: 400,
-        drug: 100,
-        rollover: 100
-    }
-};
-const defaultFlags = {
-    currentXY: [],
-    lastXY: [],
-    elXY: [],
-    multi: false,
-    touchStarted: false,
-    touchMoved: false,
-    touchDragTime: undefined,
-    swipeOutBounded: false,
-    touchStartTime: undefined,
-};
+const allowsEvents: VueTouch.events[] = ["hover","tap","dbltap","longtap","swipe","hold","drug","rollover"];
+
 const defaultListenerOptions: AddEventListenerOptions = {
     once: false,
     passive: false,
     capture: false
 };
-const getXY = (
-    event: MouseEvent|TouchEvent
-): [x: number, y: number] => event.type.indexOf('mouse') !== -1
-    ? [(event as MouseEvent).clientX, (event as MouseEvent).clientY]
-    : [(event as TouchEvent).touches[0].clientX, (event as TouchEvent).touches[0].clientY];
-const assignOptions = (
-    options?: VueTouch.Options, defaults: VueTouch.Options = defaultOptions
-) => Object.assign(
-    {},
-    defaults || {},
-    options || {},
-    {classes: Object.assign({}, defaults?.classes || {}, options?.classes || {})},
-    {tolerance: Object.assign({}, defaults?.tolerance || {}, options?.tolerance || {})},
-) as  Required<VueTouch.Options>;
 
 export default {
     install(app, options?: VueTouch.Options) {
         const opts = assignOptions(options);
-        const createTouchElement = (el: HTMLElement|VueTouch.Element, options?:VueTouch.Options): VueTouch.Element => {
-            return Object.assign(el, {
-                _vueTouch: {
-                    ...defaultFlags,
-                    callbacks: [],
-                    ...("_vueTouch" in el ? el._vueTouch : {}),
-                    opts: assignOptions(options, "_vueTouch" in el ? el._vueTouch.opts : opts)
-                }
-            }) as VueTouch.Element;
-        };
-        const addClass = (el: VueTouch.Element, name: keyof VueTouch.OptionsClasses) => {
-            const className = el._vueTouch.opts.classes[name];
-            className && el.classList.add(className);
-        };
-        const removeClass = (el: VueTouch.Element, name: keyof VueTouch.OptionsClasses) => {
-            const className = el._vueTouch.opts.classes[name];
-            className && el.classList.remove(className);
-        };
-        const clean = (el: VueTouch.Element) => {
-            const classes = el._vueTouch.opts.classes || {};
-            Object.keys(classes).map((cl) => removeClass(el, cl as keyof VueTouch.OptionsClasses));
-            Object.assign(el._vueTouch, defaultFlags);
-        };
-        const emit = (event: Event, type: VueTouch.events) => {
-            const el = event.target as VueTouch.Element;
-            const callbacks = el._vueTouch.callbacks.filter(
-                (cl) => cl.arg === type
-            );
 
-            for(const binding of callbacks) {
-                binding.modifiers.stop && event.stopPropagation();
-                binding.modifiers.prevent && event.preventDefault();
-
-                if(binding.modifiers.self && event.target !== event.currentTarget) {
-                    continue;
-                }
-
-                if(typeof binding.value === "function") {
-                    binding.value({
-                        originalEvent: event,
-                        type,
-                        ...el._vueTouch
-                    });
-                }
-            }
-        };
         const touchstart = (event: Event) => {
             const el = event.target as VueTouch.Element;
-            console.log("touchstart");
-            console.log(el._vueTouch);
+            const vt = el._vueTouch;
+            vt.touchStarted = true;
+            vt.touchMoved = false;
+            vt.swipeOutBounded = false;
+            vt.touchStartTime = event.timeStamp;
+            emit(event, "tap");
+            addClass(el, "tap", true);
+            vt.touchHoldTimer = vt.touchHoldTimer || setTimeout(() => {
+                emit(event, "longtap");
+                addClass(el, "longtap");
+            }, vt.opts.tolerance.longtap);
         };
         const touchmove = (event: Event) => {
             const el = event.target as VueTouch.Element;
@@ -121,11 +38,16 @@ export default {
         };
         const touchend = (event: Event) => {
             const el = event.target as VueTouch.Element;
+            const vt = el._vueTouch;
+            clearTimeout(vt.touchHoldTimer);
+            delete vt.touchHoldTimer;
+            removeClass(el, "longtap");
             console.log("touchend");
         };
         const mouseenter = (event: Event) => {
             const el = event.target as VueTouch.Element;
             addClass(el, "hover");
+            emit(event, "hover");
         };
         const mouseleave = (event: Event) => {
             const el = event.target as VueTouch.Element;
@@ -134,13 +56,12 @@ export default {
         const dblclick = (event: Event) => {
             const el = event.target as VueTouch.Element;
             emit(event, "dbltap");
-            addClass(el, "dbltap");
-            setTimeout(() => removeClass(el, "dbltap"), el._vueTouch.opts.tolerance.dbltap * 2);
+            addClass(el, "dbltap", true);
         };
 
         app.directive('touch', {
             beforeMount(el, binding) {
-                const touchEl = createTouchElement(el);
+                const touchEl = createTouchElement(el, opts);
                 const listenerOpts = Object.assign({}, defaultListenerOptions);
                 const type = binding.arg = binding.arg || "tap";
                 const modifiers = binding.modifiers;
