@@ -80,7 +80,7 @@ const build = async(input, output, format = "esm") => {
  */
 const buildTypes = async(root) => {
     const bundle = await rollup.rollup({
-        input: ["./src/index.ts"],
+        input: ["./src/index.ts", "./src/helpers/utils.ts", "./src/types.ts"],
         external,
         plugins: [
             aliasPlugin({
@@ -116,6 +116,6 @@ const checkFileSize = async(filePath) => {
     log(
         `${chalk.gray(
             chalk.bold(path.basename(filePath))
-        )} min:${minSize} / gzip:${gzippedSize}`
+        )} file:${minSize} / gzip:${gzippedSize}`
     );
 };

@@ -39,7 +39,7 @@ export default {
         const touchend = (event: Event) => {
             const el = event.target as VueTouch.Element;
             const vt = el._vueTouch;
-            clearTimeout(vt.touchHoldTimer);
+            vt.touchHoldTimer && clearTimeout(vt.touchHoldTimer);
             delete vt.touchHoldTimer;
             removeClass(el, "hold");
             console.log("touchend");

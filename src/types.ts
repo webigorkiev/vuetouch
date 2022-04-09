@@ -3,8 +3,8 @@ import type {DirectiveBinding} from "vue";
 export namespace VueTouch {
     export interface Options {
         click?: boolean; // is used click mode
-        classes?: VueTouchOptionsClasses; // classes for all state of component
-        tolerance?: VueTouchOptionsTolerance; // in ms
+        classes?: OptionsClasses; // classes for all state of component
+        tolerance?: OptionsTolerance; // in ms
     }
     export type events = "hover"|"press"|"tap"|"multi"|"dbltap"|"longtap"|"hold"|"swipe"|"drag"|"rollover"|"release";
     export interface OptionsClasses {
@@ -30,21 +30,21 @@ export namespace VueTouch {
         drag?: number,
         hover?: number,
         rollover?: number,
-        timeout: 200
+        timeout?: number
     }
     export interface Element extends HTMLElement {
         _vueTouch: {
             callbacks: Array<DirectiveBinding<CallableFunction|string>>,
-            opts: Required<VueTouchOptions & {
-                classes: Required<VueTouchOptionsClasses>,
-                tolerance: Required<VueTouchOptionsTolerance>
+            opts: Required<Options & {
+                classes: Required<OptionsClasses>,
+                tolerance: Required<OptionsTolerance>
             }>,
             touchStarted: boolean,
             touchMoved: boolean,
             touchDragTime?: number,
             swipeOutBounded: boolean,
             touchStartTime?: number,
-            touchHoldTimer?: Timer,
+            touchHoldTimer?: NodeJS.Timer,
             multi: number,
             currentXY: number[],
             lastXY: number[],
