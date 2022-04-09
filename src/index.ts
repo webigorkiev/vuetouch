@@ -1,47 +1,7 @@
 import type {Plugin, Directive, DirectiveBinding} from "vue";
+import type {VueTouch} from "@/types";
 
-export interface VueTouchOptions {
-    click?: boolean; // is used click mode
-    classes?: VueTouchOptionsClasses; // classes for all state of component
-    tolerance?: VueTouchOptionsTolerance; // in ms
-}
-type events = "tap"|"dbltap"|"longtap"|"swipe"|"hold"|"drug"|"hover"|"rollover";
-interface VueTouchOptionsClasses {
-    tap?: string,
-    dbltap?:string,
-    longtap?: string,
-    swipe?: string,
-    hold?: string,
-    drug?: string,
-    hover?: string,
-    rollover?: string
-}
-interface VueTouchOptionsTolerance { // in ms
-    tap?: number,
-    dbltap?: number,
-    longtap?: number,
-    swipe?: number,
-    hold?: number,
-    drug?: number,
-    hover?: number,
-    rollover?: number
-}
-interface TouchElement extends HTMLElement {
-    _vueTouch: {
-        callbacks: Array<DirectiveBinding<CallableFunction|string>>,
-        opts: Required<VueTouchOptions & {classes: Required<VueTouchOptionsClasses>, tolerance: Required<VueTouchOptionsTolerance>}>,
-        touchStarted: boolean,
-        touchMoved: boolean,
-        touchDragTime?: number,
-        swipeOutBounded: boolean,
-        touchStartTime?: number,
-        currentX?: number,
-        currentY?: number,
-        lastX?: number,
-        lastY?: number,
-    }
-}
-const allowsEvents: events[] = ["tap","dbltap","longtap","swipe","hold","drug","hover","rollover"];
+const allowsEvents: VueTouch.events[] = ["tap","dbltap","longtap","swipe","hold","drug","hover","rollover"];
 const defaultOptions = {
     click: true,
     classes: {
@@ -65,10 +25,9 @@ const defaultOptions = {
     }
 };
 const defaultFlags = {
-    currentX: undefined,
-    currentY: undefined,
-    lastX: undefined,
-    lastY: undefined,
+    currentXY: [],
+    lastXY: [],
+    elXY: [],
     touchStarted: false,
     touchMoved: false,
     touchDragTime: undefined,
@@ -80,25 +39,25 @@ const defaultListenerOptions: AddEventListenerOptions = {
     passive: false,
     capture: false
 };
-const getCoords = (
+const getXY = (
     event: MouseEvent|TouchEvent
-): {x: number, y: number} => event.type.indexOf('mouse') !== -1
-    ? {x: (event as MouseEvent).clientX, y: (event as MouseEvent).clientY}
-    : {x: (event as TouchEvent).touches[0].clientX, y: (event as TouchEvent).touches[0].clientY};
+): [x: number, y: number] => event.type.indexOf('mouse') !== -1
+    ? [(event as MouseEvent).clientX, (event as MouseEvent).clientY]
+    : [(event as TouchEvent).touches[0].clientX, (event as TouchEvent).touches[0].clientY];
 const assignOptions = (
-    options?: VueTouchOptions, defaults: VueTouchOptions = defaultOptions
+    options?: VueTouch.Options, defaults: VueTouch.Options = defaultOptions
 ) => Object.assign(
     {},
     defaults || {},
     options || {},
     {classes: Object.assign({}, defaults?.classes || {}, options?.classes || {})},
     {tolerance: Object.assign({}, defaults?.tolerance || {}, options?.tolerance || {})},
-) as  Required<VueTouchOptions>;
+) as  Required<VueTouch.Options>;
 
 export default {
-    install(app, options?: VueTouchOptions) {
+    install(app, options?: VueTouch.Options) {
         const opts = assignOptions(options);
-        const createTouchElement = (el: HTMLElement|TouchElement, options?:VueTouchOptions): TouchElement => {
+        const createTouchElement = (el: HTMLElement|VueTouch.Element, options?:VueTouch.Options): VueTouch.Element => {
             return Object.assign(el, {
                 _vueTouch: {
                     ...defaultFlags,
@@ -106,23 +65,23 @@ export default {
                     ...("_vueTouch" in el ? el._vueTouch : {}),
                     opts: assignOptions(options, "_vueTouch" in el ? el._vueTouch.opts : opts)
                 }
-            }) as TouchElement;
+            }) as VueTouch.Element;
         };
-        const addClass = (el: TouchElement, name: keyof VueTouchOptionsClasses) => {
+        const addClass = (el: VueTouch.Element, name: keyof VueTouch.OptionsClasses) => {
             const className = el._vueTouch.opts.classes[name];
             className && el.classList.add(className);
         };
-        const removeClass = (el: TouchElement, name: keyof VueTouchOptionsClasses) => {
+        const removeClass = (el: VueTouch.Element, name: keyof VueTouch.OptionsClasses) => {
             const className = el._vueTouch.opts.classes[name];
             className && el.classList.remove(className);
         };
-        const clean = (el: TouchElement) => {
+        const clean = (el: VueTouch.Element) => {
             const classes = el._vueTouch.opts.classes || {};
-            Object.keys(classes).map((cl) => removeClass(el, cl as keyof VueTouchOptionsClasses));
+            Object.keys(classes).map((cl) => removeClass(el, cl as keyof VueTouch.OptionsClasses));
             Object.assign(el._vueTouch, defaultFlags);
         };
-        const emit = (event: Event, type: events) => {
-            const el = event.target as TouchElement;
+        const emit = (event: Event, type: VueTouch.events) => {
+            const el = event.target as VueTouch.Element;
             const callbacks = el._vueTouch.callbacks.filter(
                 (cl) => cl.arg === type
             );
@@ -145,32 +104,32 @@ export default {
             }
         };
         const touchstart = (event: Event) => {
-            const el = event.target as TouchElement;
+            const el = event.target as VueTouch.Element;
             console.log("touchstart");
             console.log(el._vueTouch);
         };
         const touchmove = (event: Event) => {
-            const el = event.target as TouchElement;
+            const el = event.target as VueTouch.Element;
             // console.log("touchmove");
         };
         const touchcancel = (event: Event) => {
-            const el = event.target as TouchElement;
+            const el = event.target as VueTouch.Element;
             clean(el);
         };
         const touchend = (event: Event) => {
-            const el = event.target as TouchElement;
+            const el = event.target as VueTouch.Element;
             console.log("touchend");
         };
         const mouseenter = (event: Event) => {
-            const el = event.target as TouchElement;
+            const el = event.target as VueTouch.Element;
             addClass(el, "hover");
         };
         const mouseleave = (event: Event) => {
-            const el = event.target as TouchElement;
+            const el = event.target as VueTouch.Element;
             removeClass(el, "hover");
         };
         const dblclick = (event: Event) => {
-            const el = event.target as TouchElement;
+            const el = event.target as VueTouch.Element;
             emit(event, "dbltap");
             addClass(el, "dbltap");
             setTimeout(() => removeClass(el, "dbltap"), el._vueTouch.opts.tolerance.dbltap * 2);
@@ -185,7 +144,7 @@ export default {
                 listenerOpts.capture = modifiers.capture || false;
                 listenerOpts.once = modifiers.once || false;
                 listenerOpts.passive = modifiers.passive || false;
-                !allowsEvents.includes(<events>type) && console.error(`Allows only ${allowsEvents.join(", ")} modifiers for v-touch`);
+                !allowsEvents.includes(<VueTouch.events>type) && console.error(`Allows only ${allowsEvents.join(", ")} modifiers for v-touch`);
                 touchEl._vueTouch.callbacks.push(binding);
 
                 touchEl.addEventListener('touchstart', touchstart, listenerOpts);
@@ -217,16 +176,16 @@ export default {
                     touchEl.removeEventListener('dblclick ', dblclick);
                 }
             }
-        } as Directive<HTMLElement|TouchElement, CallableFunction|string>);
+        } as Directive<HTMLElement|VueTouch.Element, CallableFunction|string>);
         app.directive('touch-classes', {
             beforeMount(el: HTMLElement, binding) {
                 createTouchElement(el, {classes: binding.value});
             }
-        } as Directive<HTMLElement, VueTouchOptionsClasses>);
+        } as Directive<HTMLElement, VueTouch.OptionsClasses>);
         app.directive('touch-tolerance', {
             beforeMount(el: HTMLElement, binding) {
                 createTouchElement(el, {tolerance: binding.value});
             }
-        } as Directive<HTMLElement, VueTouchOptionsTolerance>);
+        } as Directive<HTMLElement, VueTouch.OptionsTolerance>);
     }
 } as Plugin;
