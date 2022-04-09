@@ -1,36 +1,64 @@
 <template>
-    <div class="external">
-        <div class="internal">
-            <div
-                class="goal"
-                v-touch:tap="onTap"
-                v-touch:dbltap="onDblTap"
-                v-touch:longtap="onLongTap"
-            ></div>
+    <div>
+        <div class="external">
+            <div class="internal">
+                <div
+                    class="goal"
+                    v-touch:*="onAll"
+                    v-touch:press="onPress"
+                    v-touch:dbltap="onDblTap"
+                    v-touch:hold="onHold"
+                ></div>
+            </div>
         </div>
+        <ul>
+            <li v-for="event in events.slice().reverse()">{{event}}</li>
+        </ul>
     </div>
 </template>
 
 <script lang="ts">
     import {defineComponent} from "vue";
+    import type {VueTouchEvent} from "../../src";
 
     export default defineComponent({
         name: "App",
+        data() {
+          return {
+              events: []
+          }
+        },
         methods: {
-            onTap(event) {
-                console.log("tap", event);
+            onAll(event: VueTouchEvent) {
+                console.log(event);
+                this.events.push(event.type);
+            },
+            onPress(event) {
+                console.log("press", event);
             },
             onDblTap(event) {
                 console.log("dbltap", event);
             },
-            onLongTap(event) {
-                console.log("longtap", event);
+            onHold(event) {
+                console.log("hold", event);
             }
         }
     });
 </script>
 
 <style>
+    ul {
+        max-height: 200px;
+        overflow: hidden;
+        width: 200px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    li {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
     .external {
         display: flex;
         align-items: center;

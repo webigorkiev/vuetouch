@@ -1,4 +1,5 @@
 import type {VueTouch} from "@/types";
+import type {VueTouchEvent} from "@/index";
 
 const defaultOptions = {
     click: true,
@@ -9,6 +10,7 @@ const defaultOptions = {
         dbltap: "v-touch-dbltap",
         longtap: "v-touch-longtap",
         hover: "v-touch-hover",
+        leave: "v-touch-leave",
         rollover: "v-touch-rollover",
         swipe: "v-touch-swipe",
         drag: "v-touch-drag",
@@ -94,7 +96,7 @@ export const emit = (event: Event, type: VueTouch.events) => {
                 originalEvent: event,
                 type,
                 ...el._vueTouch
-            });
+            } as VueTouchEvent);
         }
     }
 };

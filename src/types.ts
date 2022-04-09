@@ -6,9 +6,10 @@ export namespace VueTouch {
         classes?: OptionsClasses; // classes for all state of component
         tolerance?: OptionsTolerance; // in ms
     }
-    export type events = "hover"|"press"|"tap"|"multi"|"dbltap"|"longtap"|"hold"|"swipe"|"drag"|"rollover"|"release";
+    export type events = "hover"|"leave"|"press"|"tap"|"multi"|"dbltap"|"longtap"|"hold"|"swipe"|"drag"|"rollover"|"release";
     export interface OptionsClasses {
         hover?: string,
+        leave?: string,
         press?: string,
         tap?: string,
         dbltap?:string,
@@ -32,23 +33,24 @@ export namespace VueTouch {
         rollover?: number,
         timeout?: number
     }
+    export interface VueTouchOpts {
+        callbacks: Array<DirectiveBinding<CallableFunction|string>>,
+        opts: Required<Options & {
+            classes: Required<OptionsClasses>,
+            tolerance: Required<OptionsTolerance>
+        }>,
+        touchStarted: boolean,
+        touchMoved: boolean,
+        touchDragTime?: number,
+        swipeOutBounded: boolean,
+        touchStartTime?: number,
+        touchHoldTimer?: NodeJS.Timer,
+        multi: number,
+        currentXY: number[],
+        lastXY: number[],
+        shiftXY: number[],
+    }
     export interface Element extends HTMLElement {
-        _vueTouch: {
-            callbacks: Array<DirectiveBinding<CallableFunction|string>>,
-            opts: Required<Options & {
-                classes: Required<OptionsClasses>,
-                tolerance: Required<OptionsTolerance>
-            }>,
-            touchStarted: boolean,
-            touchMoved: boolean,
-            touchDragTime?: number,
-            swipeOutBounded: boolean,
-            touchStartTime?: number,
-            touchHoldTimer?: NodeJS.Timer,
-            multi: number,
-            currentXY: number[],
-            lastXY: number[],
-            shiftXY: number[],
-        }
+        _vueTouch: VueTouchOpts
     }
 }

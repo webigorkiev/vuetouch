@@ -2,7 +2,13 @@ import type {Plugin, Directive} from "vue";
 import {assignOptions, addClass, removeClass, clean, emit, createTouchElement} from "./helpers/utils";
 import type {VueTouch} from "@/types";
 
-const allowsEvents: VueTouch.events[] = ["hover","press","tap","dbltap","longtap","hold","rollover","swipe","drag","release"];
+export interface VueTouchEvent extends VueTouch.VueTouchOpts {
+    originalEvent: Event & {target: VueTouch.Element},
+    type: VueTouch.events,
+
+}
+
+const allowsEvents: VueTouch.events[] = ["hover","press","tap","dbltap","longtap","hold","rollover","swipe","drag","release","leave"];
 
 const defaultListenerOptions: AddEventListenerOptions = {
     once: false,
@@ -51,7 +57,13 @@ export default {
         };
         const mouseleave = (event: Event) => {
             const el = event.target as VueTouch.Element;
+            const vt = el._vueTouch;
             removeClass(el, "hover");
+            vt.touchHoldTimer && clearTimeout(vt.touchHoldTimer);
+            delete vt.touchHoldTimer;
+            removeClass(el, "hold");
+            addClass(el, "leave", true);
+            emit(event, "leave");
         };
         const dblclick = (event: Event) => {
             const el = event.target as VueTouch.Element;
@@ -68,8 +80,13 @@ export default {
                 listenerOpts.capture = modifiers.capture || false;
                 listenerOpts.once = modifiers.once || false;
                 listenerOpts.passive = modifiers.passive || false;
-                !allowsEvents.includes(<VueTouch.events>type) && console.error(`Allows only ${allowsEvents.join(", ")} modifiers for v-touch`);
-                touchEl._vueTouch.callbacks.push(binding);
+                (!allowsEvents.includes(<VueTouch.events>type) && binding.arg !== "*") && console.error(`Allows only ${allowsEvents.join(", ")} modifiers for v-touch`);
+
+                if(binding.arg === "*") {
+                    allowsEvents.map((type) => touchEl._vueTouch.callbacks.push(Object.assign({}, binding, {arg: type})));
+                } else {
+                    touchEl._vueTouch.callbacks.push(binding);
+                }
 
                 touchEl.addEventListener('touchstart', touchstart, listenerOpts);
                 touchEl.addEventListener('touchmove', touchmove, listenerOpts);
