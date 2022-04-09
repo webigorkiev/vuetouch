@@ -60,6 +60,6 @@
   "bugs": {
     "url": "https://github.com/webigorkiev/vuetouch/issues"
   },
-  "homepage": "hhttps://github.com/webigorkiev/vuetouch#readme",
+  "homepage": "https://github.com/webigorkiev/vuetouch#readme",
   "web-types": "./web-types.json"
 }
