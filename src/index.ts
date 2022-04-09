@@ -6,6 +6,7 @@ const defaultOptions = {
     click: true,
     classes: {
         tap: "v-touch-tap",
+        multi: "v-touch-multi",
         dbltap: "v-touch-dbltap",
         longtap: "v-touch-longtap",
         swipe: "v-touch-swipe",
@@ -16,6 +17,7 @@ const defaultOptions = {
     },
     tolerance: {
         tap: 10,
+        multi: 10,
         dbltap: 100,
         longtap: 400,
         swipe: 30,
@@ -28,6 +30,7 @@ const defaultFlags = {
     currentXY: [],
     lastXY: [],
     elXY: [],
+    multi: false,
     touchStarted: false,
     touchMoved: false,
     touchDragTime: undefined,
