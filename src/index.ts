@@ -23,7 +23,7 @@ const defaultListenerOptions: AddEventListenerOptions = {
 };
 
 // define directive
-export const defineTouch = (options?: VueTouch.Options) => {
+export const defineTouch = (options?: VueTouch.Options):Directive => {
     const opts = assignOptions(options);
 
     return {
@@ -86,7 +86,35 @@ export const defineTouch = (options?: VueTouch.Options) => {
 };
 
 // directive
-export const touch = defineTouch();
+export const touch:Directive = defineTouch();
+
+// scroll window directive
+const defineScroll = (): Directive  => {
+    let fn: (evt: Event) => any;
+
+    return {
+        mounted(el, binding) {
+            fn = (event: Event) => {
+                binding.value({
+                    originalEvent: event,
+                    scroll: [
+                        scrollX,
+                        scrollY
+                    ]
+                });
+
+            };
+            window.addEventListener("scroll", fn, { passive: true });
+        },
+        unmounted() {
+            if(fn) {
+                window.removeEventListener('scroll', fn);
+            }
+        }
+    };
+};
+const vscroll: Directive = defineScroll();
+export {vscroll as scroll};
 
 // plugin
 export default {
@@ -102,5 +130,6 @@ export default {
                 createTouchElement(el, {tolerance: binding.value});
             }
         } as Directive<HTMLElement, VueTouch.OptionsTolerance>);
+        app.directive("scroll", defineTouch());
     }
 } as Plugin;

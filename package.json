@@ -2,7 +2,7 @@
   "name": "vuetouch",
   "private": true,
   "description": "Enable tap, swipe, drag, touch, hold, mouse down, mouse up events on DOM Element in vue 3",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./index.js",
   "module": "./index.mjs",
   "scripts": {
@@ -11,7 +11,8 @@
     "lint": "eslint --ext .ts --ignore-path .gitignore ./src/**/*",
     "test": "jest tests/index.spec.ts -c jest.config.ts --silent false --passWithNoTests",
     "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs"
+    "docs:build": "vitepress build docs",
+    "deploy": "node deploy.mjs"
   },
   "dependencies": {},
   "devDependencies": {
