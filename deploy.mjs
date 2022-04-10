@@ -70,3 +70,5 @@ await spawnLog("git --git-dir=docs/.vitepress/dist/.git --work-tree=docs/.vitepr
 await spawnLog(`git --git-dir=docs/.vitepress/dist/.git --work-tree=docs/.vitepress/dist commit -m "${commit}"`, [], {stdio: "ignore"});
 await spawnLog("git --git-dir=docs/.vitepress/dist/.git --work-tree=docs/.vitepress/dist push", [], {stdio: "ignore"});
 console.log(green, "4. Процесс успешно завершен", black);
+console.log("GitHub", "https://github.com/webigorkiev/vuetouch/");
+console.log("GitHub Pages", "https://webigorkiev.github.io/vuetouch-docs/");
