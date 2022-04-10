@@ -4,6 +4,9 @@ import { exec as execCallback, spawn } from 'child_process';
 import util from 'util';
 import os from "os";
 import margv from "margv";
+import fs from "fs-extra";
+import prompts from "prompts";
+import path from "path";
 
 const cwd = './';
 const red = "\x1b[31m";
@@ -13,12 +16,25 @@ const exec = util.promisify(execCallback);
 const platform = os.platform();
 const osType = os.type();
 
-let [node, script, commit] = process.argv;
+const pkg = await fs.readJson(path.resolve("./package.json"));
+
+let [node, script, commit = `v${pkg.version}`] = process.argv;
 const args = margv();
 commit = args.m || commit;
 
 if(!commit) {
     console.log(red, "Commit label not set. Aborting...", black);
+    process.exit(0);
+}
+
+const response = await prompts({
+    type: 'text',
+    name: 'value',
+    message: `Создать коммит ${commit}? Y/N`,
+    validate: value => value < 18 ? `Y or N` : true
+});
+
+if(response.value.toLowerCase() !== 'y') {
     process.exit(0);
 }
 

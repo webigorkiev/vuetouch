@@ -2,7 +2,7 @@
   "name": "vuetouch",
   "private": true,
   "description": "Enable tap, swipe, drag, touch, hold, mouse down, mouse up events on DOM Element in vue 3",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "./index.js",
   "module": "./index.mjs",
   "scripts": {
@@ -35,6 +35,7 @@
     "jest": "27",
     "jest-puppeteer": "^6.1.0",
     "margv": "^1.1.2",
+    "prompts": "^2.4.2",
     "puppeteer": "^13.5.2",
     "rollup": "^2.63.0",
     "rollup-plugin-dts": "^3.0.2",
