@@ -59,7 +59,7 @@ await spawnLog("git add .", [], {stdio: "ignore"});
 await spawnLog(`git commit -m "${commit}"`, [], {stdio: "ignore"});
 await spawnLog("git push", [], {stdio: "ignore"});
 console.log(green, "3. Создание комита документации", black);
-await spawnLog("git git --git-dir=docs/.vitepress/dist/.git --work-tree=docs/.vitepress/dist add .", [], {stdio: "ignore"});
+await spawnLog("git --git-dir=docs/.vitepress/dist/.git --work-tree=docs/.vitepress/dist add .", [], {stdio: "ignore"});
 await spawnLog(`git --git-dir=docs/.vitepress/dist/.git --work-tree=docs/.vitepress/dist commit -m "${commit}"`, [], {stdio: "ignore"});
 await spawnLog("git --git-dir=docs/.vitepress/dist/.git --work-tree=docs/.vitepress/dist push", [], {stdio: "ignore"});
 console.log(green, "4. Процесс успешно завершен", black);
