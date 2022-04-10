@@ -1,5 +1,4 @@
 import type {DirectiveBinding} from "vue";
-import debounce from "@/debounce";
 
 export namespace VueTouch {
     export interface Options {
