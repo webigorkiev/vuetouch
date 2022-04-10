@@ -55,16 +55,7 @@ const spawnLog = (command, args = [], options = {}) => new Promise((resolve, rej
         stdio: "inherit"
     }, options);
     const stream = spawn(command, args, options);
-    stream.on('close', code => {
-
-        if(code !== 0) {
-
-            reject(code);
-        } else {
-
-            resolve(code);
-        }
-    });
+    stream.on('close', code => resolve(code));
 });
 
 // hide loggin --quiet --silent -s
