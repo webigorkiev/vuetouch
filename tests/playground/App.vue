@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="external">
-            <div class="scroll" v-touch:scroll="onScroll">
+            <div class="scroll" v-tt:scroll="onScroll">
             <p>scroll</p>
             <p>scroll</p>
             <p>scroll</p>
@@ -35,9 +35,13 @@
 <script lang="ts">
     import {defineComponent} from "vue";
     import type {VueTouchEvent} from "../../src";
+    import {defineTouch} from "../../src";
 
     export default defineComponent({
         name: "App",
+        directives: {
+          tt: defineTouch()
+        },
         data() {
           return {
               events: []
@@ -77,6 +81,7 @@
         margin: 0 auto;
         text-align: center;
         overflow-y: scroll;
+        box-sizing: border-box;
     }
     ul {
         max-height: 200px;
