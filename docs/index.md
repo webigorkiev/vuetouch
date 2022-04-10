@@ -20,6 +20,7 @@
 - self
 - once
 - passive
+- debounce
 
 ## Ресурсы
 

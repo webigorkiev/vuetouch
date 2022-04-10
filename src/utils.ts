@@ -1,3 +1,4 @@
+import {debounce} from "./debounce";
 import type {VueTouch} from "@/types";
 import type {VueTouchEvent} from "@/index";
 
@@ -22,7 +23,8 @@ const defaultOptions = {
         dbltap: 100, // ms
         longtap: 200,
         hold: 500,
-        timeout: 200 // ms class remove after event
+        timeout: 200, // ms class remove after event
+        debounce: 25
     }
 };
 const defaultFlags = {
@@ -157,7 +159,7 @@ export const emit = (event: Event, el: VueTouch.Element, type?: VueTouch.events,
                         "scroll"
                     ].includes(key))
             );
-            binding.value({
+            debounce(binding.value, binding.modifiers.debounce ? el._vueTouch.opts.tolerance.debounce : 0)({
                 originalEvent: event,
                 type,
                 ...addition

@@ -1,4 +1,5 @@
 import type {DirectiveBinding} from "vue";
+import debounce from "@/debounce";
 
 export namespace VueTouch {
     export interface Options {
@@ -27,7 +28,8 @@ export namespace VueTouch {
         dbltap?: number, // on pc it auto
         longtap?: number,
         hold?: number,
-        timeout?: number
+        timeout?: number,
+        debounce?: number
     }
     export interface VueTouchOpts {
         callbacks: Array<DirectiveBinding<CallableFunction|string>>,
