@@ -6,7 +6,8 @@ export namespace VueTouch {
         classes?: OptionsClasses; // classes for all state of component
         tolerance?: OptionsTolerance; // in ms
     }
-    export type events = "hover"|"leave"|"press"|"tap"|"multi"|"dbltap"|"longtap"|"hold"|"swipe"|"drag"|"rollover"|"release";
+    export type events = "hover"|"leave"|"press"|"tap"|"multi"|"dbltap"|"longtap"|"hold"|"swipe"|"drag"|"rollover"
+        |"release"|"scroll";
     export interface OptionsClasses {
         hover?: string,
         leave?: string,
@@ -22,15 +23,10 @@ export namespace VueTouch {
         release?: string,
     }
     export interface OptionsTolerance { // in ms
-        tap?: number,
-        multi?: number,
-        dbltap?: number,
+        tap?: number, // in px
+        dbltap?: number, // on pc it auto
         longtap?: number,
-        swipe?: number,
         hold?: number,
-        drag?: number,
-        hover?: number,
-        rollover?: number,
         timeout?: number
     }
     export interface VueTouchOpts {
@@ -39,16 +35,25 @@ export namespace VueTouch {
             classes: Required<OptionsClasses>,
             tolerance: Required<OptionsTolerance>
         }>,
-        touchStarted: boolean,
-        touchMoved: boolean,
-        touchDragTime?: number,
-        swipeOutBounded: boolean,
+        touchStarted: boolean, // on click or tap start
+        touchMoved: boolean, // if moved over
+        // touchDragTime?: number, // probably not need
+        // swipeOutBounded: boolean,
         touchStartTime?: number,
+        requestAnimationFrameId?: number,
         touchHoldTimer?: NodeJS.Timer,
+        touchRolloverTimer?: NodeJS.Timer,
+        touchDragTimer?: NodeJS.Timer,
         multi: number,
         currentXY: number[],
+        startXY: number[],
         lastXY: number[],
         shiftXY: number[],
+        distance: number,
+        lastDistance?: number,
+        direction?: "left"|"right"|"top"|"bottom",
+        scale: 0|1|-1,
+        scroll: number[]
     }
     export interface Element extends HTMLElement {
         _vueTouch: VueTouchOpts
