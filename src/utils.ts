@@ -24,7 +24,8 @@ const defaultOptions = {
         longtap: 200,
         hold: 500,
         timeout: 200, // ms class remove after event
-        debounce: 25
+        debounce: 25,
+        swipe: 10 // in px
     }
 };
 const defaultFlags = {

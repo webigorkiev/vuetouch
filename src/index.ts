@@ -131,6 +131,6 @@ export default {
                 createTouchElement(el, {tolerance: binding.value});
             }
         } as Directive<HTMLElement, VueTouch.OptionsTolerance>);
-        app.directive("scroll", defineTouch());
+        app.directive("touch-scroll", defineTouch());
     }
 } as Plugin;

@@ -5,6 +5,5 @@ import type {VueTouch} from "../../src";
 
 const app = createApp(App);
 app.use(vuetouch, {
-    click: true
 } as VueTouch.Options);
 app.mount("#app");

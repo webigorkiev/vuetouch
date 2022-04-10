@@ -87,9 +87,14 @@ export const touchend = (event: Event) => {
             }
         }
     } else {
-        emit(event, el, "swipe");
-        addClass(el, "swipe", true);
-        vt.multi > 1 && addClass(el, "multi", true);
+        if(
+            Math.abs(vt.currentXY[0] - vt.startXY[0]) >= vt.opts.tolerance.swipe
+            || Math.abs(vt.currentXY[1] - vt.startXY[1]) >= vt.opts.tolerance.swipe
+        ) {
+            emit(event, el, "swipe", false);
+            addClass(el, "swipe", true);
+            vt.multi > 1 && addClass(el, "multi", true);
+        }
     }
 
     vt.touchStarted = false;

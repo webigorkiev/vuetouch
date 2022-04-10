@@ -28,7 +28,8 @@ export namespace VueTouch {
         longtap?: number,
         hold?: number,
         timeout?: number,
-        debounce?: number
+        debounce?: number,
+        swipe?: number
     }
     export interface VueTouchOpts {
         callbacks: Array<DirectiveBinding<CallableFunction|string>>,

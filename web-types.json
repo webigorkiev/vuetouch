@@ -66,6 +66,20 @@
             "module": "./src/index.ts",
             "symbol": "Touch"
           }
+        },
+        {
+          "name": "v-touch-scroll",
+          "description": "",
+          "doc-url": "https://webigorkiev.github.io/vuetouch-docs/",
+          "default": "",
+          "required": false,
+          "value": {
+            "kind": "expression"
+          },
+          "source": {
+            "module": "./src/index.ts",
+            "symbol": "Touch"
+          }
         }
       ]
     }
