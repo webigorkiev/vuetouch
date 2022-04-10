@@ -68,6 +68,14 @@ const app = createApp(defineComponent({
 - passive
 - debounce
 
+## Специальные модификаторы
+
+- left
+- right
+- top
+- bottom 
+- multi
+
 ## Настройки
 
 ```typescript

@@ -50,7 +50,7 @@ const app = createApp(defineComponent({
 })); // App - common component
 ```
 
-## События
+## Events
 
 - **hover** - mouse pointer over the element
 - **press** - fires when the user clicks on an element
@@ -64,7 +64,7 @@ const app = createApp(defineComponent({
 - **drag** - Fires when an element is dragged (additional modifiers **left, right, top, bottom, multi**)
 - **release** - Fires when an element is released
 
-## Общие модификаторы:
+## General modifiers:
 
 - stop
 - prevent
@@ -74,7 +74,15 @@ const app = createApp(defineComponent({
 - passive
 - debounce
 
-## Настройки
+## Special modifiers
+
+- left
+- right
+- top
+- bottom
+- multi
+
+## Settings
 
 ```typescript
 interface Options {
@@ -96,11 +104,11 @@ interface Options {
         tap?: number, // in px
         multi?: number, // in px
         dbltap?: number, // on pc it auto
-        longtap?: number,
-        hold?: number,
-        timeout?: number,
-        debounce?: number,
-        swipe?: number
-    } // in ms
+        longtap?: number, // in ms
+        hold?: number, // in ms
+        timeout?: number, // in ms
+        debounce?: number, // in ms
+        swipe?: number // min distance in px
+    }
 }
 ```
