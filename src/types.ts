@@ -2,7 +2,6 @@ import type {DirectiveBinding} from "vue";
 
 export namespace VueTouch {
     export interface Options {
-        click?: boolean; // is used click mode
         classes?: OptionsClasses; // classes for all state of component
         tolerance?: OptionsTolerance; // in ms
     }
@@ -24,6 +23,7 @@ export namespace VueTouch {
     }
     export interface OptionsTolerance { // in ms
         tap?: number, // in px
+        multi?: number, // in px
         dbltap?: number, // on pc it auto
         longtap?: number,
         hold?: number,

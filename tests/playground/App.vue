@@ -23,6 +23,7 @@
                     v-touch:hold="onHold"
                     v-touch:swipe="onSwipe"
                     v-touch:swipe.left="onSwipeLeft"
+                    v-touch:drag.multi="onDragMulti"
                 ></div>
             </div>
         </div>
@@ -69,6 +70,9 @@
             },
             onScroll(event:VueTouchEvent) {
                 // console.log(event.scroll);
+            },
+            onDragMulti() {
+                console.log("drag", "multi");
             }
         }
     });

@@ -2,7 +2,6 @@ import type {VueTouch} from "@/types";
 import type {VueTouchEvent} from "@/index";
 
 const defaultOptions = {
-    click: true,
     classes: {
         hold: "v-touch-hold",
         press: "v-touch-press",
@@ -19,6 +18,7 @@ const defaultOptions = {
     },
     tolerance: {
         tap: 2, // drag > px
+        multi: 50,
         dbltap: 100, // ms
         longtap: 200,
         hold: 500,
@@ -41,6 +41,9 @@ const defaultFlags = {
     touchRolloverTimer: undefined,
     touchDragTimer: undefined,
 };
+export const isTouchScreenDevice = () => {
+    return 'ontouchstart' in window || navigator.maxTouchPoints;
+};
 export const assignOptions = (
     options?: VueTouch.Options, defaults: VueTouch.Options = defaultOptions
 ) => Object.assign(
@@ -51,7 +54,9 @@ export const assignOptions = (
     {tolerance: Object.assign({}, defaults?.tolerance || {}, options?.tolerance || {})},
 ) as  Required<VueTouch.Options>;
 export const getTouchCoords = (
-    event: Event
+    event: Event,
+    el: VueTouch.Element,
+    type?: VueTouch.events
 ): {
     x: number,
     y: number,
@@ -68,19 +73,31 @@ export const getTouchCoords = (
     } else {
         let distance = 0;
         const length = (event as TouchEvent).touches.length;
+        const showLangth = type && ["tap", "release", "longtap"].includes(type) ?  length + 1 : length;
+
+        if(!length) {
+            return {
+                x: el._vueTouch.lastXY[0],
+                y: el._vueTouch.lastXY[1],
+                length: showLangth,
+                distance: el._vueTouch.lastDistance as number
+            };
+        }
+
         const x = (event as TouchEvent).touches[0].clientX;
         const y = (event as TouchEvent).touches[0].clientY;
 
         if(length > 1) {
-            const x1 = (event as TouchEvent).touches[1].clientX;
-            const y1 = (event as TouchEvent).touches[1].clientY;
-            distance = Math.round(Math.sqrt(Math.pow(x1-x, 2) + Math.pow(y1-y, 2)));
+            const last = (event as TouchEvent).touches[length -1];
+            const x1 = last.clientX;
+            const y1 = last.clientY;
+            distance = Math.sqrt(Math.pow(x1-x, 2) + Math.pow(y1-y, 2));
         }
 
         return {
             x,
             y,
-            length,
+            length: showLangth,
             distance
         };
     }
@@ -99,8 +116,8 @@ export const clean = (el: VueTouch.Element) => {
     Object.keys(classes).map((cl) => removeClass(el, cl as keyof VueTouch.OptionsClasses));
     Object.assign(el._vueTouch, defaultFlags);
 };
-export const emit = (event: Event, el: VueTouch.Element, type: VueTouch.events) => {
-    setXYLD(event, el);
+export const emit = (event: Event, el: VueTouch.Element, type?: VueTouch.events, countCoords = true) => {
+    countCoords && setXYLD(event, el, type);
     const callbacks = el._vueTouch.callbacks.filter(
         (cl) => cl.arg === type
     );
@@ -115,11 +132,11 @@ export const emit = (event: Event, el: VueTouch.Element, type: VueTouch.events) 
 
         if(typeof binding.value === "function") {
 
-            if(binding.modifiers.multi && !el._vueTouch.multi) {
+            if(binding.modifiers.multi && el._vueTouch.multi <= 1) {
                 continue;
             }
 
-            if(["drag", "swipe"].includes(type)) {
+            if(type && ["drag", "swipe"].includes(type)) {
                 const filters = ["left", "right", "top", "bottom"].filter((v) => binding.modifiers[v]);
 
                 if(filters.length && el._vueTouch.direction) {
@@ -163,13 +180,13 @@ const getCoords = (el: HTMLElement) => {
 
     return [box.left + scrollX, box.top + scrollY];
 };
-export const setXYLD = (event: Event, el: VueTouch.Element) => {
+export const setXYLD = (event: Event, el: VueTouch.Element, type?: VueTouch.events) => {
     const vt = el._vueTouch;
-    vt.lastXY = el._vueTouch.currentXY;
-    vt.lastDistance = el._vueTouch.distance;
-    const {x, y, length, distance} = getTouchCoords(event);
+    vt.lastXY = vt.currentXY;
+    vt.lastDistance = vt.distance;
+    const {x, y, length, distance} = getTouchCoords(event, el, type);
     vt.currentXY = [x, y];
-    vt.multi = length;
+    vt.multi = length > 1 && distance > vt.opts.tolerance.multi ? length : 1;
     vt.distance = distance;
     vt.scroll = [el.scrollLeft, el.scrollTop];
 

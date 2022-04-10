@@ -1,8 +1,9 @@
 import type {Plugin, Directive} from "vue";
-import {assignOptions, createTouchElement} from "./utils";
+import {assignOptions, createTouchElement, isTouchScreenDevice} from "./utils";
 import {touchstart, touchmove, touchcancel, touchend, scroll, mouseleave, mouseenter, dblclick} from "./handlers";
 import type {VueTouch} from "@/types";
 
+export {VueTouch};
 export interface VueTouchEvent {
     originalEvent: Event & {target: VueTouch.Element},
     type: VueTouch.events,
@@ -56,7 +57,7 @@ export const defineTouch = (options?: VueTouch.Options):Directive => {
                 touchEl.addEventListener('touchend', touchend, listenerOpts);
                 touchEl.addEventListener("scroll", scroll, listenerOpts);
 
-                if(touchEl._vueTouch.opts.click) {
+                if(!isTouchScreenDevice()) {
                     touchEl.addEventListener('mousedown', touchstart, listenerOpts);
                     touchEl.addEventListener('mousemove', touchmove, listenerOpts);
                     touchEl.addEventListener('mouseup', touchend, listenerOpts);
@@ -73,7 +74,7 @@ export const defineTouch = (options?: VueTouch.Options):Directive => {
             touchEl.removeEventListener('touchend', touchend);
             touchEl.removeEventListener("scroll", scroll);
 
-            if("_vueTouch" in touchEl && touchEl._vueTouch && touchEl._vueTouch.opts.click) {
+            if("_vueTouch" in touchEl && touchEl._vueTouch && !isTouchScreenDevice()) {
                 touchEl.removeEventListener('mousedown', touchstart);
                 touchEl.removeEventListener('mousemove', touchmove);
                 touchEl.removeEventListener('mouseup', touchend);

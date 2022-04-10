@@ -40,7 +40,7 @@ export const touchmove = (event: Event) => {
         }
 
         if(move) {
-            emit(event, el, "rollover");
+            emit(event, el, "rollover", false);
             addClass(el, "rollover");
             vt.multi > 1 && addClass(el, "multi");
             vt.touchRolloverTimer && clearTimeout(vt.touchRolloverTimer);
@@ -50,7 +50,7 @@ export const touchmove = (event: Event) => {
             );
         }
 
-        emit(event, el, "drag");
+        emit(event, el, "drag", false);
         addClass(el, "drag");
         vt.multi > 1 && addClass(el, "multi");
         vt.touchDragTimer && clearTimeout(vt.touchDragTimer);
