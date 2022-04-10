@@ -35,8 +35,6 @@ const defaultFlags = {
     touchMoved: false,
     scale: 0,
     scroll: [0, 0],
-    //touchDragTime: undefined,
-    // swipeOutBounded: false,
     touchStartTime: undefined,
     requestAnimationFrameId: undefined,
     touchHoldTimer: undefined,

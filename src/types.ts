@@ -37,8 +37,6 @@ export namespace VueTouch {
         }>,
         touchStarted: boolean, // on click or tap start
         touchMoved: boolean, // if moved over
-        // touchDragTime?: number, // probably not need
-        // swipeOutBounded: boolean,
         touchStartTime?: number,
         requestAnimationFrameId?: number,
         touchHoldTimer?: NodeJS.Timer,
