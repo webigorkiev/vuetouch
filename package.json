@@ -1,8 +1,8 @@
 {
-  "name": "vuetouch",
+  "name": "@vuemod/vue-touch",
   "private": true,
   "description": "Enable tap, swipe, drag, touch, hold, mouse down, mouse up events on DOM Element in vue 3",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "./index.js",
   "module": "./index.mjs",
   "scripts": {
