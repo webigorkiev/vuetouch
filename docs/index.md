@@ -67,7 +67,9 @@ const app = createApp(defineComponent({
 </script>
 ```
 
-## События
+## События и модификаторы
+
+### События
 
 - \* - все события
 - **hover** - указатель мыши над элементом
@@ -83,7 +85,7 @@ const app = createApp(defineComponent({
 - **release** - Срабатывает при отпускании элемента
 - **scroll** - Срабатывает скроле элемента
 
-## Общие модификаторы:
+### Общие модификаторы:
 
 - stop
 - prevent
@@ -92,7 +94,7 @@ const app = createApp(defineComponent({
 - once
 - passive
 
-## Специальные модификаторы
+### Специальные модификаторы
 
 - left
 - right
@@ -130,4 +132,23 @@ interface Options {
         swipe?: number
     } // in ms
 }
+```
+
+### Класы по умолчанию
+
+```
+
+    hold: "v-touch-hold",
+    press: "v-touch-press",
+    multi: "v-touch-multi",
+    dbltap: "v-touch-dbltap",
+    tap: "v-touch-tap",
+    longtap: "v-touch-longtap",
+    hover: "v-touch-hover",
+    leave: "v-touch-leave",
+    rollover: "v-touch-rollover",
+    swipe: "v-touch-swipe",
+    drag: "v-touch-drag",
+    release: "v-touch-release",
+    
 ```

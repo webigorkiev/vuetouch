@@ -1,4 +1,3 @@
-import {debounce} from "./debounce";
 import type {VueTouch} from "@/types";
 import type {VueTouchEvent} from "@/index";
 
@@ -19,13 +18,13 @@ const defaultOptions = {
     },
     tolerance: {
         tap: 2, // drag > px
-        multi: 50,
-        dbltap: 250, // ms
-        longtap: 200,
-        hold: 500,
+        multi: 50, // min distanse in px
+        dbltap: 250, // ms max delay
+        longtap: 200, // longtap ms min
+        hold: 500, // hold ms min
         timeout: 200, // ms class remove after event
-        debounce: 25,
-        swipe: 10 // in px
+        debounce: 25, // ms debounce time
+        swipe: 10 // in px min distance
     }
 };
 const defaultFlags = {
@@ -49,13 +48,24 @@ export const isTouchScreenDevice = () => {
     return 'ontouchstart' in window || navigator.maxTouchPoints;
 };
 export const assignOptions = (
-    options?: VueTouch.Options, defaults: VueTouch.Options = defaultOptions
+    defaults?: VueTouch.Options,
+    options?: VueTouch.Options
 ) => Object.assign(
     {},
+    defaultOptions,
     defaults || {},
     options || {},
-    {classes: Object.assign({}, defaults?.classes || {}, options?.classes || {})},
-    {tolerance: Object.assign({}, defaults?.tolerance || {}, options?.tolerance || {})},
+    {classes: Object.assign(
+        {}, defaultOptions.classes,
+            defaults?.classes || {},
+            options?.classes || {}
+        )},
+    {tolerance: Object.assign(
+        {},
+            defaultOptions.tolerance,
+            defaults?.tolerance || {},
+            options?.tolerance || {}
+        )},
 ) as  Required<VueTouch.Options>;
 export const getTouchCoords = (
     event: Event,
@@ -151,7 +161,7 @@ export const emit = (event: Event, el: VueTouch.Element, type?: VueTouch.events,
                         "scroll"
                     ].includes(key))
             );
-            debounce(binding.value, binding.modifiers.debounce ? el._vueTouch.opts.tolerance.debounce : 0)({
+            binding.value({
                 originalEvent: event,
                 type,
                 ...addition

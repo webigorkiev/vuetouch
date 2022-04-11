@@ -22,17 +22,17 @@ export namespace VueTouch {
         release?: string,
     }
     export interface OptionsTolerance { // in ms
-        tap?: number, // in px
-        multi?: number, // in px
-        dbltap?: number, // on pc it auto
-        longtap?: number,
-        hold?: number,
+        tap?: number, // in min px to set move
+        multi?: number, // in min px distance
+        dbltap?: number, // on pc it auto // max inteval
+        longtap?: number, // interval in ms
+        hold?: number, // interval in ms
         timeout?: number, // timeout for remove classes from element
-        debounce?: number,
-        swipe?: number
+        debounce?: number, // interval in ms
+        swipe?: number // main distance in px
     }
     export interface VueTouchOpts {
-        callbacks: Array<DirectiveBinding<CallableFunction|string>>,
+        callbacks: Array<DirectiveBinding<(...args: any[]) => any|string>>,
         opts: Required<Options & {
             classes: Required<OptionsClasses>,
             tolerance: Required<OptionsTolerance>

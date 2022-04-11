@@ -2,6 +2,7 @@ import type {Plugin, Directive} from "vue";
 import {assignOptions, createTouchElement, isTouchScreenDevice} from "./utils";
 import {touchstart, touchmove, touchcancel, touchend, scroll, mouseleave, mouseenter, dblclick} from "./handlers";
 import type {VueTouch} from "@/types";
+import {debounce} from "./debounce";
 
 export {VueTouch};
 export interface VueTouchEvent {
@@ -29,6 +30,7 @@ export const defineTouch = (options?: VueTouch.Options):Directive => {
     return {
         beforeMount(el, binding) {
             const isFirstDirective = !("_vueTouch" in el);
+            // console.log(opts);
             const touchEl = createTouchElement(el, opts);
             const listenerOpts = Object.assign({}, defaultListenerOptions);
             const type = binding.arg = binding.arg || "tap";
@@ -38,6 +40,17 @@ export const defineTouch = (options?: VueTouch.Options):Directive => {
             listenerOpts.passive = modifiers.passive || false;
             (!allowsEvents.includes(<VueTouch.events>type) && binding.arg !== "*")
             && console.error(`Allows only ${allowsEvents.join(", ")} modifiers for v-touch`);
+            Object.keys(modifiers).map((v) => {
+                const [arg, param] = v.split(":");
+                modifiers[arg] = modifiers[v];
+                if(touchEl._vueTouch.opts.tolerance.hasOwnProperty(arg) && param) {
+                    // @ts-ignore
+                    touchEl._vueTouch.opts.tolerance[arg] = parseInt(param);
+                }
+            });
+            if(modifiers.debounce && typeof binding.value === "function") {
+                binding.value = debounce(binding.value, touchEl._vueTouch.opts.tolerance.debounce);
+            }
             if(binding.arg === "*") {
                 allowsEvents.map(
                     (type) => touchEl._vueTouch.callbacks.push(
@@ -45,6 +58,12 @@ export const defineTouch = (options?: VueTouch.Options):Directive => {
                     )
                 );
             } else {
+                const [arg, param] = binding.arg.split(":");
+                binding.arg = arg;
+                if(touchEl._vueTouch.opts.tolerance.hasOwnProperty(arg) && param) {
+                    // @ts-ignore
+                    touchEl._vueTouch.opts.tolerance[arg] = parseInt(param);
+                }
                 touchEl._vueTouch.callbacks.push(binding);
             }
             if(isFirstDirective) {
@@ -78,7 +97,7 @@ export const defineTouch = (options?: VueTouch.Options):Directive => {
                 touchEl.removeEventListener('dblclick ', dblclick);
             }
         }
-    } as Directive<HTMLElement|VueTouch.Element, CallableFunction|string>;
+    } as Directive<HTMLElement|VueTouch.Element, (...args: any[]) => any|string>;
 };
 
 // directive
@@ -126,6 +145,6 @@ export default {
                 createTouchElement(el, {tolerance: binding.value});
             }
         } as Directive<HTMLElement, VueTouch.OptionsTolerance>);
-        app.directive("touch-scroll", defineTouch());
+        app.directive("touch-scroll", defineScroll());
     }
 } as Plugin;

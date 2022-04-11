@@ -73,7 +73,9 @@ const app = createApp(defineComponent({
 </script>
 ```
 
-## Events
+## Events and modifiers
+
+### Events
 
 - \* - all events
 - **hover** - mouse pointer over the element
@@ -89,7 +91,7 @@ const app = createApp(defineComponent({
 - **release** - Fires when an element is released
 - **scroll** - Fires when an element is scrolled
 
-## General modifiers:
+### General modifiers:
 
 - stop
 - prevent
@@ -99,7 +101,7 @@ const app = createApp(defineComponent({
 - passive
 - debounce
 
-## Special modifiers
+### Special modifiers
 
 - left
 - right
@@ -136,4 +138,23 @@ interface Options {
         swipe?: number // min distance in px
     }
 }
+```
+
+### Default classes
+
+```
+
+    hold: "v-touch-hold",
+    press: "v-touch-press",
+    multi: "v-touch-multi",
+    dbltap: "v-touch-dbltap",
+    tap: "v-touch-tap",
+    longtap: "v-touch-longtap",
+    hover: "v-touch-hover",
+    leave: "v-touch-leave",
+    rollover: "v-touch-rollover",
+    swipe: "v-touch-swipe",
+    drag: "v-touch-drag",
+    release: "v-touch-release",
+    
 ```

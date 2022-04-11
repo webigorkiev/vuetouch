@@ -1,19 +1,10 @@
-export function debounce(cb: CallableFunction, duration: number = 0): CallableFunction {
+type func = (...args: any[]) => any;
+export function debounce<T extends func>(cb: T, duration: number = 0): func {
     let timer: any;
-
     return function(this: any) {
-
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        const context = this;
-
-        // eslint-disable-next-line prefer-rest-params
-        const args = arguments;
-
-        clearTimeout(timer);
-        timer = setTimeout(function() {
-
-            // @ts-ignore
-            cb.apply(context, args);
-        }, duration);
+        if(!timer) {
+            cb.apply<typeof context, any, func>(this, arguments);
+            timer = setTimeout(() => timer = undefined, duration);
+        }
     };
 }
