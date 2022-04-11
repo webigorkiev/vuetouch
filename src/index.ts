@@ -38,8 +38,6 @@ export const defineTouch = (options?: VueTouch.Options):Directive => {
             listenerOpts.capture = modifiers.capture || false;
             listenerOpts.once = modifiers.once || false;
             listenerOpts.passive = modifiers.passive || false;
-            (!allowsEvents.includes(<VueTouch.events>type) && binding.arg !== "*")
-            && console.error(`Allows only ${allowsEvents.join(", ")} modifiers for v-touch`);
             Object.keys(modifiers).map((v) => {
                 const [arg, param] = v.split(":");
                 modifiers[arg] = modifiers[v];
@@ -66,6 +64,8 @@ export const defineTouch = (options?: VueTouch.Options):Directive => {
                 }
                 touchEl._vueTouch.callbacks.push(binding);
             }
+            (!allowsEvents.includes(<VueTouch.events>type) && binding.arg !== "*")
+            && console.error(`Allows only ${allowsEvents.join(", ")} modifiers for v-touch`);
             if(isFirstDirective) {
                 touchEl.addEventListener('touchstart', touchstart, listenerOpts);
                 touchEl.addEventListener('touchmove', touchmove, listenerOpts);
