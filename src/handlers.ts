@@ -1,5 +1,5 @@
 import type {VueTouch} from "@/types";
-import {addClass, clean, emit, removeClass, setXYLD} from "./utils";
+import {addClass, clean, emit, isTouchScreenDevice, removeClass, setXYLD} from "./utils";
 
 export const touchstart = (event: Event) => {
     const el = event.currentTarget as VueTouch.Element;
@@ -18,7 +18,6 @@ export const touchstart = (event: Event) => {
 export const touchmove = (event: Event) => {
     const el = event.currentTarget as VueTouch.Element;
     const vt = el._vueTouch;
-
     if(!vt.touchStarted) {
         return;
     }
@@ -27,18 +26,15 @@ export const touchmove = (event: Event) => {
         setXYLD(event, el);
         const move = Math.abs(vt.currentXY[0] - vt.lastXY[0]) >= vt.opts.tolerance.tap ||
             Math.abs(vt.currentXY[1] - vt.lastXY[1]) >= vt.opts.tolerance.tap;
-
         if(!vt.touchMoved && move) {
             vt.startXY = vt.currentXY;
         }
         vt.touchMoved = vt.touchMoved || move;
-
         if(vt.touchMoved) {
             vt.touchHoldTimer && clearTimeout(vt.touchHoldTimer);
             delete vt.touchHoldTimer;
             removeClass(el, "hold");
         }
-
         if(move) {
             emit(event, el, "rollover", false);
             addClass(el, "rollover");
@@ -49,7 +45,6 @@ export const touchmove = (event: Event) => {
                 vt.opts.tolerance.timeout
             );
         }
-
         emit(event, el, "drag", false);
         addClass(el, "drag");
         vt.multi > 1 && addClass(el, "multi");
@@ -71,10 +66,8 @@ export const touchend = (event: Event) => {
     vt.touchHoldTimer && clearTimeout(vt.touchHoldTimer);
     delete vt.touchHoldTimer;
     removeClass(el, "hold");
-
     if(!vt.touchMoved) {
         const time = event.timeStamp - (vt.touchStartTime as number);
-
         if(time < vt.opts.tolerance.hold) {
             if(time >= vt.opts.tolerance.longtap) {
                 emit(event, el, "longtap");
@@ -84,6 +77,12 @@ export const touchend = (event: Event) => {
                 emit(event, el, "tap");
                 addClass(el, "tap", true);
                 vt.multi > 1 && addClass(el, "multi", true);
+                if(vt.touchDbltapTimer && isTouchScreenDevice()) {
+                    emit(event, el, "dbltap");
+                    addClass(el, "dbltap", true);
+                    vt.multi > 1 && addClass(el, "multi", true);
+                }
+                vt.touchDbltapTimer = setTimeout(() => vt.touchDbltapTimer = undefined,  vt.opts.tolerance.dbltap);
             }
         }
     } else {
@@ -111,21 +110,17 @@ export const mouseenter = (event: Event) => {
 export const mouseleave = (event: Event) => {
     const el = event.currentTarget as VueTouch.Element;
     const vt = el._vueTouch;
-
     removeClass(el, "hover");
     vt.touchHoldTimer && clearTimeout(vt.touchHoldTimer);
     delete vt.touchHoldTimer;
     removeClass(el, "hold");
-
     if(vt.touchMoved) {
         emit(event, el, "swipe");
         addClass(el, "swipe", true);
         vt.multi > 1 && addClass(el, "multi", true);
     }
-
     vt.touchStarted = false;
     vt.touchMoved = false;
-
     emit(event, el, "leave");
     addClass(el, "leave", true);
 };

@@ -44,8 +44,32 @@ const app = createApp(defineComponent({
 })); // App - common component
 ```
 
+### Пример использования
+
+```vue
+<template>
+    <div v-touch:tap="onTap">Test Event</div>
+</template>
+
+<script lang="ts">
+    import {defineComponent} from "vue";
+    import type {VueTouchEvent} from "@vuemod/vue-touch";
+
+    export default defineComponent({
+        name: "App",
+        methods: {
+            onAll(event: VueTouchEvent) {
+                console.log(event);
+            }
+        }
+    });
+
+</script>
+```
+
 ## События
 
+- \* - все события
 - **hover** - указатель мыши над элементом
 - **press** - срабатывает, когда пользователь нажимает на элемент
 - **tap** - щелчек мышкой или нажатие на экран (срабатывает при отпускании)
@@ -57,6 +81,7 @@ const app = createApp(defineComponent({
 - **swipe** - Срабатывает при свайпе по элементу (доп. модификаторы **left, right, top, bottom, multi**)
 - **drag** - Срабатывает при перетаскивании элемента (доп. модификаторы **left, right, top, bottom, multi**)
 - **release** - Срабатывает при отпускании элемента
+- **scroll** - Срабатывает скроле элемента
 
 ## Общие модификаторы:
 
@@ -66,7 +91,6 @@ const app = createApp(defineComponent({
 - self
 - once
 - passive
-- debounce
 
 ## Специальные модификаторы
 
@@ -75,6 +99,7 @@ const app = createApp(defineComponent({
 - top
 - bottom 
 - multi
+- debounce
 
 ## Настройки
 

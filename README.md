@@ -50,8 +50,32 @@ const app = createApp(defineComponent({
 })); // App - common component
 ```
 
+### Example
+
+```vue
+<template>
+    <div v-touch:tap="onTap">Test Event</div>
+</template>
+
+<script lang="ts">
+    import {defineComponent} from "vue";
+    import type {VueTouchEvent} from "@vuemod/vue-touch";
+
+    export default defineComponent({
+        name: "App",
+        methods: {
+            onAll(event: VueTouchEvent) {
+                console.log(event);
+            }
+        }
+    });
+
+</script>
+```
+
 ## Events
 
+- \* - all events
 - **hover** - mouse pointer over the element
 - **press** - fires when the user clicks on an element
 - **tap** - mouse click or tap on the screen (works when released)
@@ -63,6 +87,7 @@ const app = createApp(defineComponent({
 - **swipe** - Fires when you swipe over an element (additional modifiers **left, right, top, bottom, multi**)
 - **drag** - Fires when an element is dragged (additional modifiers **left, right, top, bottom, multi**)
 - **release** - Fires when an element is released
+- **scroll** - Fires when an element is scrolled
 
 ## General modifiers:
 

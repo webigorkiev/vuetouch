@@ -27,7 +27,7 @@ export namespace VueTouch {
         dbltap?: number, // on pc it auto
         longtap?: number,
         hold?: number,
-        timeout?: number,
+        timeout?: number, // timeout for remove classes from element
         debounce?: number,
         swipe?: number
     }
@@ -39,8 +39,9 @@ export namespace VueTouch {
         }>,
         touchStarted: boolean, // on click or tap start
         touchMoved: boolean, // if moved over
-        touchStartTime?: number,
+        touchStartTime?: number, // time of touch start
         requestAnimationFrameId?: number,
+        touchDbltapTimer?:NodeJS.Timer, // Timer for dbltouch event for devices
         touchHoldTimer?: NodeJS.Timer,
         touchRolloverTimer?: NodeJS.Timer,
         touchDragTimer?: NodeJS.Timer,

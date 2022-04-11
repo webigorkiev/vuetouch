@@ -26,7 +26,6 @@ const defaultListenerOptions: AddEventListenerOptions = {
 // define directive
 export const defineTouch = (options?: VueTouch.Options):Directive => {
     const opts = assignOptions(options);
-
     return {
         beforeMount(el, binding) {
             const isFirstDirective = !("_vueTouch" in el);
@@ -39,7 +38,6 @@ export const defineTouch = (options?: VueTouch.Options):Directive => {
             listenerOpts.passive = modifiers.passive || false;
             (!allowsEvents.includes(<VueTouch.events>type) && binding.arg !== "*")
             && console.error(`Allows only ${allowsEvents.join(", ")} modifiers for v-touch`);
-
             if(binding.arg === "*") {
                 allowsEvents.map(
                     (type) => touchEl._vueTouch.callbacks.push(
@@ -49,14 +47,12 @@ export const defineTouch = (options?: VueTouch.Options):Directive => {
             } else {
                 touchEl._vueTouch.callbacks.push(binding);
             }
-
             if(isFirstDirective) {
                 touchEl.addEventListener('touchstart', touchstart, listenerOpts);
                 touchEl.addEventListener('touchmove', touchmove, listenerOpts);
                 touchEl.addEventListener('touchcancel', touchcancel, listenerOpts);
                 touchEl.addEventListener('touchend', touchend, listenerOpts);
                 touchEl.addEventListener("scroll", scroll, listenerOpts);
-
                 if(!isTouchScreenDevice()) {
                     touchEl.addEventListener('mousedown', touchstart, listenerOpts);
                     touchEl.addEventListener('mousemove', touchmove, listenerOpts);
@@ -73,7 +69,6 @@ export const defineTouch = (options?: VueTouch.Options):Directive => {
             touchEl.removeEventListener('touchcancel', touchcancel);
             touchEl.removeEventListener('touchend', touchend);
             touchEl.removeEventListener("scroll", scroll);
-
             if("_vueTouch" in touchEl && touchEl._vueTouch && !isTouchScreenDevice()) {
                 touchEl.removeEventListener('mousedown', touchstart);
                 touchEl.removeEventListener('mousemove', touchmove);

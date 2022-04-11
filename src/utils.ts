@@ -20,7 +20,7 @@ const defaultOptions = {
     tolerance: {
         tap: 2, // drag > px
         multi: 50,
-        dbltap: 100, // ms
+        dbltap: 250, // ms
         longtap: 200,
         hold: 500,
         timeout: 200, // ms class remove after event
@@ -40,6 +40,7 @@ const defaultFlags = {
     scroll: [0, 0],
     touchStartTime: undefined,
     requestAnimationFrameId: undefined,
+    touchDbltapTimer: undefined,
     touchHoldTimer: undefined,
     touchRolloverTimer: undefined,
     touchDragTimer: undefined,
@@ -77,7 +78,6 @@ export const getTouchCoords = (
         let distance = 0;
         const length = (event as TouchEvent).touches.length;
         const showLangth = type && ["tap", "release", "longtap"].includes(type) ?  length + 1 : length;
-
         if(!length) {
             return {
                 x: el._vueTouch.lastXY[0],
@@ -86,17 +86,14 @@ export const getTouchCoords = (
                 distance: el._vueTouch.lastDistance as number
             };
         }
-
         const x = (event as TouchEvent).touches[0].clientX;
         const y = (event as TouchEvent).touches[0].clientY;
-
         if(length > 1) {
             const last = (event as TouchEvent).touches[length -1];
             const x1 = last.clientX;
             const y1 = last.clientY;
             distance = Math.sqrt(Math.pow(x1-x, 2) + Math.pow(y1-y, 2));
         }
-
         return {
             x,
             y,
@@ -124,21 +121,16 @@ export const emit = (event: Event, el: VueTouch.Element, type?: VueTouch.events,
     const callbacks = el._vueTouch.callbacks.filter(
         (cl) => cl.arg === type
     );
-
     for(const binding of callbacks) {
         binding.modifiers.stop && event.stopPropagation();
         binding.modifiers.prevent && event.preventDefault();
-
         if(binding.modifiers.self && event.target !== el) {
             continue;
         }
-
         if(typeof binding.value === "function") {
-
             if(binding.modifiers.multi && el._vueTouch.multi <= 1) {
                 continue;
             }
-
             if(type && ["drag", "swipe"].includes(type)) {
                 const filters = ["left", "right", "top", "bottom"].filter((v) => binding.modifiers[v]);
 
@@ -148,7 +140,6 @@ export const emit = (event: Event, el: VueTouch.Element, type?: VueTouch.events,
                     }
                 }
             }
-
             const addition = Object.fromEntries(
                 Object.entries(el._vueTouch)
                     .filter(([key]) => [
@@ -192,23 +183,19 @@ export const setXYLD = (event: Event, el: VueTouch.Element, type?: VueTouch.even
     vt.multi = length > 1 && distance > vt.opts.tolerance.multi ? length : 1;
     vt.distance = distance;
     vt.scroll = [el.scrollLeft, el.scrollTop];
-
     if(vt.lastDistance && vt.distance) {
         if(vt.lastDistance > vt.distance) {
             vt.scale = -1;
         }
-
         if(vt.lastDistance < vt.distance) {
             vt.scale = 1;
         }
-
         if(vt.lastDistance === vt.distance) {
             vt.scale = 0;
         }
     } else {
         vt.scale = 0;
     }
-
     if(vt.startXY.length) {
         const modX = Math.abs(vt.currentXY[0] - vt.startXY[0]);
         const modY = Math.abs(vt.currentXY[1] - vt.startXY[1]);
@@ -221,7 +208,6 @@ export const setXYLD = (event: Event, el: VueTouch.Element, type?: VueTouch.even
     } else {
         vt.direction = undefined;
     }
-
     if(el) {
         const coords = getCoords(el as HTMLElement);
         vt.shiftXY = [vt.currentXY[0] - coords[0], vt.currentXY[1] - coords[1]];

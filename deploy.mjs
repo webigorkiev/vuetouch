@@ -65,6 +65,13 @@ console.log(green, "2. Создание коммита " + commit, black);
 await spawnLog("git add .", [], {stdio: "ignore"});
 await spawnLog(`git commit -m "${commit}"`, [], {stdio: "ignore"});
 await spawnLog("git push", [], {stdio: "ignore"});
+
+if(/^v\d+\.\d+\.\d+$/.test(commit)) {
+    console.log(green, "2.1 Создание тега " + commit, black);
+    await spawnLog(`git tag "${commit}"`, [], {stdio: "ignore"});
+    await spawnLog("git push --tags", [], {stdio: "ignore"});
+}
+
 console.log(green, "3. Создание комита документации", black);
 await spawnLog("git --git-dir=docs/.vitepress/dist/.git --work-tree=docs/.vitepress/dist add .", [], {stdio: "ignore"});
 await spawnLog(`git --git-dir=docs/.vitepress/dist/.git --work-tree=docs/.vitepress/dist commit -m "${commit}"`, [], {stdio: "ignore"});
