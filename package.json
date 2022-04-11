@@ -14,7 +14,8 @@
     "docs:build": "vitepress build docs",
     "deploy": "node deploy.mjs"
   },
-  "dependencies": {},
+  "dependencies": {
+  },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.2",
     "@rollup/plugin-replace": "^2.4.2",
@@ -68,5 +69,8 @@
     "url": "https://github.com/webigorkiev/vuetouch/issues"
   },
   "homepage": "https://github.com/webigorkiev/vuetouch#readme",
-  "web-types": "./web-types.json"
+  "web-types": "./web-types.json",
+  "vetur": {
+    "tags": "./tags.json"
+  }
 }

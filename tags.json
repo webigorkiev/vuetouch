@@ -1,0 +1,11 @@
+{
+    "*": {
+        "attributes": [
+            "v-touch",
+            "v-touch-scroll",
+            "v-touch-classes",
+            "v-touch-tolerance"
+        ],
+        "description": ""
+    }
+}
