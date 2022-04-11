@@ -1,3 +1,10 @@
+## [0.0.14](https://github.com/webigorkiev/vuetouch/tree/v0.0.14) (2022-04-11)
+
+### Improvement
+
+* add drag tolerance
+* add ability to pass a value in the drag event
+
 ## [0.0.13](https://github.com/webigorkiev/vuetouch/tree/v0.0.13) (2022-04-11)
 
 ### Bug Fixes

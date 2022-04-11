@@ -29,7 +29,8 @@ export namespace VueTouch {
         hold?: number, // interval in ms
         timeout?: number, // timeout for remove classes from element
         debounce?: number, // interval in ms
-        swipe?: number // main distance in px
+        drag?: number // min distance in px
+        swipe?: number // min distance in px
     }
     export interface VueTouchOpts {
         callbacks: Array<DirectiveBinding<(...args: any[]) => any|string>>,

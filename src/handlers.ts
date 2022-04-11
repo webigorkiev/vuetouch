@@ -45,14 +45,19 @@ export const touchmove = (event: Event) => {
                 vt.opts.tolerance.timeout
             );
         }
-        emit(event, el, "drag", false);
-        addClass(el, "drag");
-        vt.multi > 1 && addClass(el, "multi");
-        vt.touchDragTimer && clearTimeout(vt.touchDragTimer);
-        vt.touchDragTimer = setTimeout(
-            () => (removeClass(el, "drag"), removeClass(el, "multi")),
-            vt.opts.tolerance.timeout
-        );
+        if(
+            Math.abs(vt.currentXY[0] - vt.startXY[0]) >= vt.opts.tolerance.drag
+            || Math.abs(vt.currentXY[1] - vt.startXY[1]) >= vt.opts.tolerance.drag
+        ) {
+            emit(event, el, "drag", false);
+            addClass(el, "drag");
+            vt.multi > 1 && addClass(el, "multi");
+            vt.touchDragTimer && clearTimeout(vt.touchDragTimer);
+            vt.touchDragTimer = setTimeout(
+                () => (removeClass(el, "drag"), removeClass(el, "multi")),
+                vt.opts.tolerance.timeout
+            );
+        }
     });
 };
 export const touchcancel = (event: Event) => {

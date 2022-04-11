@@ -24,6 +24,7 @@ const defaultOptions = {
         hold: 500, // hold ms min
         timeout: 200, // ms class remove after event
         debounce: 25, // ms debounce time
+        drag: 10, // in px min distance
         swipe: 10 // in px min distance
     }
 };

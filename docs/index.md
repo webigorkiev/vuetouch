@@ -48,7 +48,7 @@ const app = createApp(defineComponent({
 
 ```vue
 <template>
-    <div v-touch:tap="onTap">Test Event</div>
+    <div v-touch:tap:10="onTap">Test Event</div>
 </template>
 
 <script lang="ts">
@@ -129,6 +129,7 @@ interface Options {
         hold?: number,
         timeout?: number,
         debounce?: number,
+        drag?: number, // min distance in px
         swipe?: number
     } // in ms
 }
