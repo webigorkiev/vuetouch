@@ -1,4 +1,4 @@
-## [0.0.15](https://github.com/webigorkiev/vuetouch/tree/v0.0.15) (2022-04-12)
+## [0.0.16](https://github.com/webigorkiev/vuetouch/tree/v0.0.16) (2022-04-12)
 
 ### Bug Fixes
 

@@ -19,7 +19,7 @@
                     class="goal"
                     v-touch:*="onAll"
                     v-touch:press="onPress"
-                    v-touch:dbltap="onDblTap"
+                    v-touch:dbltap:100="onDblTap"
                     v-touch:hold="onHold"
                     v-touch:swipe="onSwipe"
                     v-touch:swipe.left="onSwipeLeft"
