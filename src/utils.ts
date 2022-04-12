@@ -183,7 +183,7 @@ export const createTouchElement = (el: HTMLElement|VueTouch.Element, options?:Vu
 const getCoords = (el: HTMLElement) => {
     const box = el.getBoundingClientRect();
 
-    return [box.left + scrollX, box.top + scrollY];
+    return [box.left, box.top]; //[box.left + scrollX, box.top + scrollY];
 };
 export const setXYLD = (event: Event, el: VueTouch.Element, type?: VueTouch.events) => {
     const vt = el._vueTouch;
