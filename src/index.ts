@@ -9,11 +9,15 @@ export interface VueTouchEvent {
     originalEvent: Event & {target: VueTouch.Element},
     type: VueTouch.events,
     direction: "left"|"right"|"top"|"bottom",
-    currentXY: number[],
+    currentXY: [number, number],
     multi: number,
-    shiftXY: number[],
+    shiftXY: [number, number],
     scale: 0|1|-1,
-    scroll: number[]
+    scroll: [number, number]
+}
+export interface VueTouchScrollEvent {
+    originalEvent: Event & {target: VueTouch.Element},
+    scroll: [number, number]
 }
 const allowsEvents: VueTouch.events[] = [
     "hover","press","hold","leave","dbltap","tap","longtap","release","rollover","swipe","drag","scroll"
@@ -116,7 +120,7 @@ const defineScroll = (): Directive  => {
                         scrollX,
                         scrollY
                     ]
-                });
+                } as VueTouchScrollEvent);
 
             };
             window.addEventListener("scroll", fn, { passive: true });

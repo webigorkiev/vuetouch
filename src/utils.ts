@@ -180,7 +180,7 @@ export const createTouchElement = (el: HTMLElement|VueTouch.Element, options?:Vu
         }
     }) as VueTouch.Element;
 };
-const getCoords = (el: HTMLElement) => {
+const getShifts = (el: HTMLElement) => {
     const box = el.getBoundingClientRect();
 
     return [box.left, box.top]; //[box.left + scrollX, box.top + scrollY];
@@ -220,7 +220,7 @@ export const setXYLD = (event: Event, el: VueTouch.Element, type?: VueTouch.even
         vt.direction = undefined;
     }
     if(el) {
-        const coords = getCoords(el as HTMLElement);
+        const coords = getShifts(el as HTMLElement);
         vt.shiftXY = [vt.currentXY[0] - coords[0], vt.currentXY[1] - coords[1]];
     }
 };

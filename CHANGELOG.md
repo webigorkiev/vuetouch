@@ -1,3 +1,10 @@
+## [0.0.18](https://github.com/webigorkiev/vuetouch/tree/v0.0.18) (2022-04-12)
+
+### Improvement
+
+* add interface for v-touch-scroll event payload
+* Added documentation
+
 ## [0.0.17](https://github.com/webigorkiev/vuetouch/tree/v0.0.17) (2022-04-12)
 
 ### Bug Fixes

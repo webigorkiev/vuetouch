@@ -109,6 +109,44 @@ const app = createApp(defineComponent({
 - bottom
 - multi
 
+## Payload events
+
+### v-touch
+
+```typescript
+interface VueTouchEvent {
+    originalEvent: event,
+    type: VueTouch.events,
+    direction: "left" | "right" | "up" | "down",
+    currentXY: number[],
+    multi: number,
+    shiftXY: number[],
+    scale: 0|1|-1,
+    scroll: number[]
+}
+```
+
+* **originalEvent** - original event
+* **type** - event type
+* **direction** - movement direction left, right, up, down
+* **multi** - number of touch points for touch screens
+* **currentXY** - array of popular touch or pointer position coordinates
+* **shiftXY** - coordinates of the upper left corner of the block (for dragging)
+* **scale** - scaling pointer -1 decrease, 0 - no change, 1 - increase
+* **scroll** - scroll options [x, y]
+
+### v-touch-scroll
+
+```typescript
+interface VueTouchScrollEvent {
+    originalEvent: event,
+    scroll: [number, number]
+}
+```
+
+* **originalEvent** - original event
+* **scroll** - scroll parameters [x, y]
+
 ## Settings
 
 ```typescript

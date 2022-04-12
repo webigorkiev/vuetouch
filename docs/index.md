@@ -103,6 +103,44 @@ const app = createApp(defineComponent({
 - multi
 - debounce
 
+## Нагрузка события
+
+### v-touch
+
+```typescript
+interface VueTouchEvent {
+    originalEvent: Event,
+    type: VueTouch.events,
+    direction: "left"|"right"|"top"|"bottom",
+    currentXY: number[],
+    multi: number,
+    shiftXY: number[],
+    scale: 0|1|-1,
+    scroll: number[]
+}
+```
+
+* **originalEvent** - оризинальное событие
+* **type** - тип события 
+* **direction** - направление движения left, right, top, bottom
+* **multi** - количество точек касания для тач экранов
+* **currentXY** - масив координат текущего положения касания или указателя
+* **shiftXY** - координаты левого верхнего угла блока (для drag)
+* **scale** - указатель масштабирования -1 уменьшение, 0 - без изменений, 1 - увеличение
+* **scroll** - параметры скрола [x, y]
+
+### v-touch-scroll
+
+```typescript
+interface VueTouchScrollEvent {
+    originalEvent: event,
+    scroll: [number, number]
+}
+```
+
+* **originalEvent** - оризинальное событие
+* **scroll** - параметры скрола [x, y]
+
 ## Настройки
 
 ```typescript
