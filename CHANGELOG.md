@@ -1,3 +1,13 @@
+## [0.0.19](https://github.com/webigorkiev/vuetouch/tree/v0.0.19) (2022-04-13)
+
+### Improvement
+
+* add dragstart event
+
+### Bug Fixes
+
+* Fix * for all events not works
+
 ## [0.0.18](https://github.com/webigorkiev/vuetouch/tree/v0.0.18) (2022-04-12)
 
 ### Improvement

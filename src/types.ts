@@ -5,7 +5,7 @@ export namespace VueTouch {
         classes?: OptionsClasses; // classes for all state of component
         tolerance?: OptionsTolerance; // in ms
     }
-    export type events = "hover"|"leave"|"press"|"tap"|"multi"|"dbltap"|"longtap"|"hold"|"swipe"|"drag"|"rollover"
+    export type events = "hover"|"leave"|"press"|"tap"|"multi"|"dbltap"|"longtap"|"hold"|"swipe"|"drag"|"dragstart"|"rollover"
         |"release"|"scroll";
     export interface OptionsClasses {
         hover?: string,
@@ -19,6 +19,7 @@ export namespace VueTouch {
         rollover?: string,
         swipe?: string,
         drag?: string,
+        dragstart?: string,
         release?: string,
     }
     export interface OptionsTolerance { // in ms

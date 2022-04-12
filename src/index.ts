@@ -20,7 +20,7 @@ export interface VueTouchScrollEvent {
     scroll: [number, number]
 }
 const allowsEvents: VueTouch.events[] = [
-    "hover","press","hold","leave","dbltap","tap","longtap","release","rollover","swipe","drag","scroll"
+    "hover","press","hold","leave","dbltap","tap","longtap","release","rollover","swipe","drag","dragstart","scroll"
 ];
 const defaultListenerOptions: AddEventListenerOptions = {
     once: false,
@@ -56,7 +56,7 @@ export const defineTouch = (options?: VueTouch.Options):Directive => {
             if(binding.arg === "*") {
                 allowsEvents.map(
                     (type) => touchEl._vueTouch.callbacks.push(
-                        Object.assign({}, binding, {arg: binding.arg})
+                        Object.assign({}, binding, {arg: type})
                     )
                 );
             } else {

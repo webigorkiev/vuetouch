@@ -14,6 +14,7 @@ const defaultOptions = {
         rollover: "v-touch-rollover",
         swipe: "v-touch-swipe",
         drag: "v-touch-drag",
+        dragstart: "v-touch-dragstart",
         release: "v-touch-release",
     },
     tolerance: {

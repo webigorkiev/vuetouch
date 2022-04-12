@@ -28,6 +28,8 @@ export const touchmove = (event: Event) => {
             Math.abs(vt.currentXY[1] - vt.lastXY[1]) >= vt.opts.tolerance.tap;
         if(!vt.touchMoved && move) {
             vt.startXY = vt.currentXY;
+            emit(event, el, "dragstart", false);
+            addClass(el, "dragstart", true);
         }
         vt.touchMoved = vt.touchMoved || move;
         if(vt.touchMoved) {

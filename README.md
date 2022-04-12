@@ -88,6 +88,7 @@ const app = createApp(defineComponent({
 - **rollover** - fires when moving over an element (taking into account tap tolerance)
 - **swipe** - Fires when you swipe over an element (additional modifiers **left, right, top, bottom, multi**)
 - **drag** - Fires when an element is dragged (additional modifiers **left, right, top, bottom, multi**)
+- **dragstart** - Fires when an element is start drag
 - **release** - Fires when an element is released
 - **scroll** - Fires when an element is scrolled
 
@@ -193,7 +194,10 @@ interface Options {
     leave: "v-touch-leave",
     rollover: "v-touch-rollover",
     swipe: "v-touch-swipe",
+    dragstart: "v-touch-dragstart",
     drag: "v-touch-drag",
     release: "v-touch-release",
     
 ```
+
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)

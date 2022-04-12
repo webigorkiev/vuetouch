@@ -82,6 +82,7 @@ const app = createApp(defineComponent({
 - **rollover** - срабатывает при движении по элементу (c учетом толерантности tap)
 - **swipe** - Срабатывает при свайпе по элементу (доп. модификаторы **left, right, top, bottom, multi**)
 - **drag** - Срабатывает при перетаскивании элемента (доп. модификаторы **left, right, top, bottom, multi**)
+- **dragstart** - Срабатывает при старте перетаскивания
 - **release** - Срабатывает при отпускании элемента
 - **scroll** - Срабатывает скроле элемента
 
@@ -187,6 +188,7 @@ interface Options {
     leave: "v-touch-leave",
     rollover: "v-touch-rollover",
     swipe: "v-touch-swipe",
+    dragstart: "v-touch-dragstart",
     drag: "v-touch-drag",
     release: "v-touch-release",
     
