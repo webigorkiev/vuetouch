@@ -30,6 +30,7 @@ const external = [
     await fs.copy("./package.json", path.resolve(root, "./package.json"));
     await fs.copy("./README.md", path.resolve(root, "./README.md"));
     await fs.copy("./web-types.json", path.resolve(root, "./web-types.json"));
+    await fs.copy("./assets", path.resolve(root, "./assets"));
     const pkg = await fs.readJson(path.resolve(root, "./package.json"));
     pkg.private = false;
     await fs.writeJson(path.resolve(root, "./package.json"), pkg, {

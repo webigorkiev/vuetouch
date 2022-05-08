@@ -1,8 +1,8 @@
 {
   "$schema": "https://raw.githubusercontent.com/JetBrains/web-types/master/schema/web-types.json",
-  "name": "vuetouch",
+  "name": "@vuemod/vue-touch",
   "framework": "vue",
-  "version": "1.0.0",
+  "version": "0.0.21",
   "js-types-syntax": "typescript",
   "description-markup": "markdown",
   "default-icon": "./assets/vue-icon.svg",
@@ -69,6 +69,34 @@
         },
         {
           "name": "v-touch-scroll",
+          "description": "",
+          "doc-url": "https://webigorkiev.github.io/vuetouch-docs/",
+          "default": "",
+          "required": false,
+          "value": {
+            "kind": "expression"
+          },
+          "source": {
+            "module": "./src/index.ts",
+            "symbol": "Touch"
+          }
+        },
+        {
+          "name": "v-touch-resize",
+          "description": "",
+          "doc-url": "https://webigorkiev.github.io/vuetouch-docs/",
+          "default": "",
+          "required": false,
+          "value": {
+            "kind": "expression"
+          },
+          "source": {
+            "module": "./src/index.ts",
+            "symbol": "Touch"
+          }
+        },
+        {
+          "name": "v-touch-finger",
           "description": "",
           "doc-url": "https://webigorkiev.github.io/vuetouch-docs/",
           "default": "",

@@ -115,11 +115,11 @@ export const touch:Directive = defineTouch();
 
 // scroll window directive
 const defineScroll = (): Directive  => {
-    let fn: (evt: Event) => any;
+    let fn: (evt?: Event) => any;
 
     return {
         mounted(el, binding) {
-            fn = (event: Event) => {
+            fn = (event?: Event) => {
                 typeof binding.value === "function" && binding.value({
                     originalEvent: event,
                     scroll: [
@@ -130,6 +130,7 @@ const defineScroll = (): Directive  => {
 
             };
             window.addEventListener("scroll", fn, { passive: true });
+            fn();
         },
         unmounted() {
             fn && window.removeEventListener('scroll', fn);
@@ -141,11 +142,11 @@ export {vscroll as scroll};
 
 // resize
 const defineResize = (): Directive  => {
-    let fn: (evt: Event) => any;
+    let fn: (evt?: Event) => any;
 
     return {
         mounted(el, binding) {
-            fn = (event: Event) => {
+            fn = (event?: Event) => {
                 typeof binding.value === "function" && binding.value({
                     originalEvent: event,
                     resize: [
@@ -158,8 +159,8 @@ const defineResize = (): Directive  => {
                     ]
                 } as VueTouchResizeEvent);
             };
-
             window.addEventListener("resize", fn, {passive: true});
+            fn();
         },
         unmounted() {
             fn && window.removeEventListener('resize', fn);

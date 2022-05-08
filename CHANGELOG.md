@@ -1,3 +1,10 @@
+## [0.0.21](https://github.com/webigorkiev/vuetouch/tree/v0.0.21) (2022-05-08)
+
+### Improvement
+
+* **touch-resize** and **touch-scroll** fire on mount
+* Correct web types
+
 ## [0.0.20](https://github.com/webigorkiev/vuetouch/tree/v0.0.20) (2022-05-08)
 
 ### Improvement
