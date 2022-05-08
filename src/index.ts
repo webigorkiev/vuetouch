@@ -20,7 +20,7 @@ export interface VueTouchScrollEvent {
     scroll: [number, number]
 }
 export interface VueTouchResizeEvent extends VueTouchScrollEvent {
-    resize: [number, number]
+    size: [number, number]
 }
 export interface VueTouchFingerEvent {
     available: boolean
@@ -149,7 +149,7 @@ const defineResize = (): Directive  => {
             fn = (event?: Event) => {
                 typeof binding.value === "function" && binding.value({
                     originalEvent: event,
-                    resize: [
+                    size: [
                         innerWidth,
                         innerHeight
                     ],

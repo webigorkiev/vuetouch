@@ -1,5 +1,11 @@
 ## [0.0.21](https://github.com/webigorkiev/vuetouch/tree/v0.0.21) (2022-05-08)
 
+### Bug Fixes
+
+* Rename resize to size property in **touch-resize**
+
+## [0.0.21](https://github.com/webigorkiev/vuetouch/tree/v0.0.21) (2022-05-08)
+
 ### Improvement
 
 * **touch-resize** and **touch-scroll** fire on mount
