@@ -1,3 +1,10 @@
+## [0.0.20](https://github.com/webigorkiev/vuetouch/tree/v0.0.20) (2022-05-08)
+
+### Improvement
+
+* Add **touch-resize** directive
+* Add **touch-finger** directive
+
 ## [0.0.19](https://github.com/webigorkiev/vuetouch/tree/v0.0.19) (2022-04-13)
 
 ### Improvement

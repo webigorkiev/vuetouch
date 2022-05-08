@@ -19,6 +19,12 @@ export interface VueTouchScrollEvent {
     originalEvent: Event & {target: VueTouch.Element},
     scroll: [number, number]
 }
+export interface VueTouchResizeEvent extends VueTouchScrollEvent {
+    resize: [number, number]
+}
+export interface VueTouchFingerEvent {
+    available: boolean
+}
 const allowsEvents: VueTouch.events[] = [
     "hover","press","hold","leave","dbltap","tap","longtap","release","rollover","swipe","drag","dragstart","scroll"
 ];
@@ -114,7 +120,7 @@ const defineScroll = (): Directive  => {
     return {
         mounted(el, binding) {
             fn = (event: Event) => {
-                binding.value({
+                typeof binding.value === "function" && binding.value({
                     originalEvent: event,
                     scroll: [
                         scrollX,
@@ -126,14 +132,56 @@ const defineScroll = (): Directive  => {
             window.addEventListener("scroll", fn, { passive: true });
         },
         unmounted() {
-            if(fn) {
-                window.removeEventListener('scroll', fn);
-            }
+            fn && window.removeEventListener('scroll', fn);
         }
     };
 };
 const vscroll: Directive = defineScroll();
 export {vscroll as scroll};
+
+// resize
+const defineResize = (): Directive  => {
+    let fn: (evt: Event) => any;
+
+    return {
+        mounted(el, binding) {
+            fn = (event: Event) => {
+                typeof binding.value === "function" && binding.value({
+                    originalEvent: event,
+                    resize: [
+                        innerWidth,
+                        innerHeight
+                    ],
+                    scroll: [
+                        scrollX,
+                        scrollY
+                    ]
+                } as VueTouchResizeEvent);
+            };
+
+            window.addEventListener("resize", fn, {passive: true});
+        },
+        unmounted() {
+            fn && window.removeEventListener('resize', fn);
+        }
+    };
+};
+const vresize: Directive = defineResize();
+export {vresize as resize};
+
+const defineFinger = ():Directive => {
+    return {
+      async mounted(el, binding) {
+          let isFingerprintAvailable = false;
+          if("PublicKeyCredential" in window) {
+              isFingerprintAvailable = await window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+          }
+          typeof binding.value === "function" && binding.value({available: isFingerprintAvailable} as VueTouchFingerEvent);
+      }
+    };
+};
+const vfinger: Directive = defineFinger();
+export {vfinger as finger};
 
 // plugin
 export default {
@@ -150,5 +198,7 @@ export default {
             }
         } as Directive<HTMLElement, VueTouch.OptionsTolerance>);
         app.directive("touch-scroll", defineScroll());
+        app.directive("touch-resize", defineResize());
+        app.directive("touch-finger", defineFinger());
     }
 } as Plugin;

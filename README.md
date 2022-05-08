@@ -17,6 +17,8 @@ yarn add @vuemod/vue-touch
 - {**defineTouch**} - v-touch directive creator function - allows you to specify settings
 - {**touch**} - ready-made directive with default settings
 - {**scroll**} - ready directive scroll (window scrolling)
+- {**resize**} - ready directive resize (window resize)
+- {**finger**} - ready directive check is Platform Authenticator Available
 
 
 ### Installation globally
